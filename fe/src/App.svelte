@@ -1,57 +1,55 @@
 <script lang="ts">
-  import svelteLogo from './assets/svelte.svg'
-  import viteLogo from './vite.svg'
-  import Counter from './lib/Counter.svelte'
   import io  from 'socket.io-client';
+  import Hand from './Hand.svelte';
+  import Vote from './Vote.svelte'
+  import Board from './Board.svelte'
+    import type { stateType } from './types/State';
 
   let socket = io();
+  let state:stateType | null  = null;
 
-
-  socket.on('returnState', (state) => {
-      //Draw the game
-      console.log(state)
+  socket.on('returnState', (innerState:stateType) => {
+      state = innerState;
   }) // Return State
 
 </script>
 
 <main>
-  <div>
-    <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
-      <img src={viteLogo} class="logo" alt="Vite Logo" />
-    </a>
-    <a href="https://svelte.dev" target="_blank" rel="noreferrer">
-      <img src={svelteLogo} class="logo svelte" alt="Svelte Logo" />
-    </a>
-  </div>
-  <h1>Vite + Svelte</h1>
+  {#if state}
+    <Vote socket={socket} state={state}></Vote>
+    <h1>{state.meRef === state.turn ? 'My Turn' : 'Enemy Turn'}  Az sym : {state.meRef}</h1>
+    {#if state.board}
+      <div class="board">
+        <Board animateCounter={state.animateCounter} mode={state.mode} board={state.board}></Board>
+      </div>
+    {/if}
+    
+    
+    {#if state.me && state.me.hand}
+      <div class="hand">
+        <Hand socket={socket} mode={state.mode} cards={state.me.hand}></Hand>
+      </div>
 
-  <div class="card">
-    <Counter />
-  </div>
+      <div>
+        <span>Public deck left : {state.board?.publicDeck.length}</span>
+        <span>Points : {state?.me.taken.length}</span>
+      </div>
+    {/if}
 
-  <p>
-    Check out <a href="https://github.com/sveltejs/kit#readme" target="_blank" rel="noreferrer">SvelteKit</a>, the official Svelte app framework powered by Vite!
-  </p>
 
-  <p class="read-the-docs">
-    Click on the Vite and Svelte logos to learn more
-  </p>
+  {/if}
+
+
+
+
 </main>
 
+
 <style>
-  .logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
-    transition: filter 300ms;
-  }
-  .logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
-  }
-  .logo.svelte:hover {
-    filter: drop-shadow(0 0 2em #ff3e00aa);
-  }
-  .read-the-docs {
-    color: #888;
+  main{
+    height:100%;
+    width:100%;
+    display:grid;
+    grid-template-rows: 1fr;
   }
 </style>

@@ -4,8 +4,8 @@ const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 const newG = require('./globby').newIOServer;
 const delayStartBlocker = require('./blockers').delayStartBlocker
-const {test, checkIfMyTurn, checkForBattle, cleanBoard} = require('./helperMethods.js')
-
+const {battle,special, drawCard,playCard,bet, setTurn, checkIfMyTurn, checkForBattle, cleanBoard, isRoundFinished, countRoundAndClean, giveStartingCards, oppositePlayer} = require('./helperMethods.js')
+const cardsObj = require('./cards.js')
 
 app.use('/static', express.static('public'))
 app.use('/assets', express.static('fe/dist/assets'))
@@ -20,8 +20,13 @@ descr:String,
 priority:Number,
 }
 
-Move - {
+Move while betting - {
+ Mode: Strength, Agility, Intelligence,
+ Bet: 1|3|5|8|10
 }
+ Move while playing - {
+ cardIndex:number
+ }
  Card - {
  int:Number,
  str:Number,
@@ -39,6 +44,7 @@ Move - {
     hand:Card[],
     taken:Card[]
  },
+
  board: {
     CardPlayer1:Card,
     CardPlayer2:Card,
@@ -51,6 +57,9 @@ Move - {
  LastBattleWinner: player1 | player2 | null
  }
 */
+const genericSpecial = 'genericSpecial'
+
+const cards = Object.values(cardsObj)
 
 newG({
     baseState: {
@@ -62,61 +71,103 @@ newG({
             hand: [],
             taken: []
         },
+        currentBettingStep:1,
+        tie: {
+            taken:[]
+        },
         board: {
             player1: null,
             player2: null,
             winnerCard: null,
-            PublicDeck: []
+            publicDeck: cards
         },
-        turn: null,
-        mode:null,
+        turn: 'player1',
+        mode:'betting',
         animateCounter: 0,
-        lastBattleWinner: null
+        lastBattleWinner: null,
+        tempMode:null,
+        koeficient:null, //{value:1,better:'player1'},
     },
     moveFunction: function (player, move, state) {
         //State Change on Move
         if(!checkIfMyTurn(player.ref,state.turn)){
             return
         }
-        if(!playCard(player.ref, move.cardIndex,state.board)){
+        if(state.animateCounter > 0){
             return
         }
+        if(state.mode === 'betting'){
+            if(!move.mode && !move.giveUp){
+                return
+            }
+            const theBet = bet(player.ref, move, state)
+            if(theBet != 'betting'){
+                state.mode = theBet;
+                state.tempMode = null
+            }
+            if(move.mode || move.giveUp){
+                state.turn = oppositePlayer(state.turn)
+            }
+            return
+        }
+        if(!playCard(state[player.ref],player.ref, move.cardIndex,state.board)){
+            return
+        }
+        
+        //set Turn if
+        if(state.board['player1']){
+            state.turn = 'player2'
+        }
+        else if(state.board['player2']){
+            state.turn = 'player1'
+        }
+
+        drawCard(state[player.ref], state.board.publicDeck)
         if(!checkForBattle(state.board)){
             return
         }
-        const winner = battle(state.board)
-        state.lastBattleWinner = winner;
+        special(oppositePlayer(player.ref),player.ref, state)
+        special(player.ref,oppositePlayer(player.ref), state);
+
+        const winner = battle(state)
+        if(state.lastBattleWinner != 'tie'){
+            state.lastBattleWinner = winner;
+        }
+        state.turn = state.lastBattleWinner
         state.animateCounter = ANIMATE_COUNTER
-        /*
-            
-
-            playCard
-
-            checkForBattle
-              if Battle
-                winner = Battle()
-                lastBattleWinner = winner;
-              setAnimCounter(value)
-
-
-        */
     },
     minPlayers: 2,
     maxPlayers: 2, // Number of Players you want in a single game
     timeFunction: function (state) {
+        if(state.mode === 'betting'){
+            if(state.player1.hand.length === 0){
+                giveStartingCards(state)
+            }
+            return
+        }
+        //Dokato namalqva animate countera animate the battle
         if(state.animateCounter){
             state.animateCounter--;
             return;
         }
-        cleanBoard(state.board)
-
+        if(state.board.player1 && state.board.player2){
+            //Prepare for next turn
+            cleanBoard(state.board, state[state.lastBattleWinner])
+        }
+        if(isRoundFinished(state.player1.hand, state.player2.hand)){
+            countRoundAndClean(state)
+            return
+        }
         //State Change on every frame
     },
     startBlockerFunction: delayStartBlocker.startBlockerFunction(1000),
     joinBlockerFunction: delayStartBlocker.joinBlockerFunction,
     statePresenter: function (state, playerRef) {
-
-        return state;
+        const toReturn = {...state};
+        toReturn[oppositePlayer(playerRef)] = ''
+        toReturn.me = state[playerRef]
+        toReturn.meRef = playerRef
+        return toReturn;
     },
     // connectFunction: function (state, playerRef) {
 
@@ -140,7 +191,6 @@ newG({
 
 
 app.get('/', function (req, res) {
-    console.log(test())
     return res.status(200).sendFile(__dirname + '/fe/dist/index.html');
 });
 
