@@ -8,17 +8,17 @@ module.exports = {
     giant: {
         cardTitle:"Giant",
         special:"none",
-        animation:"",
+        animation:"giant",
         agility:3,
         intelligence:7,
         strength:13,
         descriptionTitle:"No special",
         description:""
     },
-    ent : {
-        cardTitle:"Ent",
+    forestDragon : {
+        cardTitle:"Forest Dragon",
         special:"entangle",
-        animation:"",
+        animation:"forestDragon",
         agility:1,
         intelligence:4,
         strength:13,
@@ -28,23 +28,23 @@ module.exports = {
     warrior: {
         cardTitle:"Warrior",
         special:"warCry",
-        animation:"",
+        animation:"warrior",
         agility:7,
         intelligence:1,
         strength:10,
         descriptionTitle:"War Cry",
         description:"If the mode is strength + 6 strength"
     },
-    //Missing Strength so giant2 for now
-    giant2: {
-        cardTitle:"Giant",
-        special:"none",
-        animation:"",
-        agility:3,
-        intelligence:7,
-        strength:13,
-        descriptionTitle:"No special",
-        description:""
+    
+    knight: {
+        cardTitle:"Knight",
+        special:"warExperience",
+        animation:"knight",
+        agility:4,
+        intelligence:4,
+        strength:8,
+        descriptionTitle:"War Experience",
+        description:"+1 for every tied card."
     }
     ,
 
@@ -52,24 +52,27 @@ module.exports = {
     antiMage: {
         cardTitle:"Mage hunter",
         special:"antiMage",
+        animation:"antiMage",
         intelligence:5,
         strength:5,
         agility:8,
         descriptionTitle:"Intelligence Trap",
         description:"If you have less intelligence than the enemy, the enemy loses all stats."
     },
-    firstPunchMan: {
-        cardTitle:"First Punch Man",
-        special:"firstPunch",
+    windElemental: {
+        cardTitle:"Wind Elemental",
+        special:"haste",
+        animation:"windElemental",
         intelligence:2,
         strength:7,
         agility:9,
-        descriptionTitle:"First Punch",
-        description:"Enemy card loses it's special"
+        descriptionTitle:"Haste",
+        description:"+1 agility to all cards in your hand."
     },
     boxer: {
         cardTitle:"Boxer",
         special:"none",
+        animation:"boxer",
         intelligence:3,
         strength:8,
         agility:12,
@@ -79,6 +82,7 @@ module.exports = {
     copyCat: {
         cardTitle:"Copy Cat",
         special:"copy",
+        animation:"copyCat",
         intelligence:5,
         strength:2,
         agility:11,
@@ -91,6 +95,7 @@ module.exports = {
         cardTitle:"Scientist",
         special:"science",
         intelligence:12,
+        animation:"scientist",
         strength:2,
         agility:2,
         descriptionTitle:"Science!!!",
@@ -99,6 +104,7 @@ module.exports = {
     witch: {
         cardTitle:"Witch",
         special:"curse",
+        animation:"witch",
         intelligence:9,
         agility:6,
         strength:3,
@@ -108,6 +114,7 @@ module.exports = {
     genie: {
         cardTitle:"Genie",
         special:"wish",
+        animation:"genie",
         intelligence:10,
         agility:4,
         strength:4,
@@ -117,6 +124,7 @@ module.exports = {
     philosopher:{
         cardTitle:"Philosopher",
         special:"none",
+        animation:"philosopher",
         description:"",
         descriptionTitle:"No special",
         intelligence:13,
@@ -128,6 +136,7 @@ module.exports = {
     sphinx:{
         cardTitle:"Sphinx",
         special:"riddle",
+        animation:"sphinx",
         description:"If you have more intelligence enemy loses all stats",
         descriptionTitle:"Riddle",
         intelligence:7,
@@ -137,6 +146,7 @@ module.exports = {
     monk:{
         cardTitle:"Monk",
         special:"training",
+        animation:"monk",
         description:"+3 for the voted stat",
         descriptionTitle:"Training",
         intelligence:7,
@@ -146,15 +156,17 @@ module.exports = {
     devil: {
         cardTitle:"Devil",
         intelligence:6,
+        animation:"devil",
         strength:6,
         agility:6,
         special:"hell",
         description:"+1 to mode stat for half of the taken cards",
         descriptionTitle:"Hell", 
     },
-    jackOfAllTrades: {
-        cardTitle:"Jack of all trades",
+    swissArmyKnife: {
+        cardTitle:"Swiss army knife",
         special:"none",
+        animation:"swissArmyKnife",
         description:"",
         descriptionTitle:"No special",
         intelligence:8,

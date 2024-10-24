@@ -5,7 +5,7 @@
     export let card:CardType;
     export let mode: modeType;
 
-    $: animation = card.animation;
+    $: animation = card.animation
     $: intelligence = card.intelligence;
     $: description = card.description;
     $: descriptionTitle = card.descriptionTitle;
@@ -33,7 +33,9 @@
     </div>
     <div class="card-image">
         <video height="150px" bind:this={video} muted preload="auto">
-            <source src={animation} type="video/mp4">
+            {#await import(`./assets/${animation}.mp4`) then { default: anim }}
+                <source src={anim} type="video/mp4">
+            {/await}
         </video>
     </div>
     <p class="description">
@@ -61,11 +63,11 @@
  :root{
     --umnojitel:5;
  }
- @media only screen and (max-width: 600px) {
+ /* @media only screen and (max-width: 600px) {
   :root{
     --umnojitel:3;
   }
-}
+} */
  .card{
     color:#122020;
     display:flex;
@@ -74,7 +76,7 @@
     background-color: var(--card-background);
     cursor:pointer;
     border-radius:25px;
-    height:500px;
+    height:420px;
  }
  .card-header{
     font-weight:500;
@@ -87,7 +89,8 @@
     margin-left:calc(3px * var(--umnojitel));
     margin-right:calc(3px * var(--umnojitel));
     font-weight:normal;
-    font-size:calc(4px * var(--umnojitel));
+    font-size:16px;
+    height:100%;
  }
  .card-image{
     max-width:100%

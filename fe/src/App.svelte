@@ -16,40 +16,91 @@
 
 <main>
   {#if state}
-    <Vote socket={socket} state={state}></Vote>
-    <h1>{state.meRef === state.turn ? 'My Turn' : 'Enemy Turn'}  Az sym : {state.meRef}</h1>
-    {#if state.board}
-      <div class="board">
-        <Board animateCounter={state.animateCounter} mode={state.mode} board={state.board}></Board>
-      </div>
-    {/if}
-    
-    
-    {#if state.me && state.me.hand}
-      <div class="hand">
-        <Hand socket={socket} mode={state.mode} cards={state.me.hand}></Hand>
-      </div>
+  <Vote socket={socket} state={state}></Vote>
+  {/if}
+  {#if state}
+  <div class="all">
+      <div class="scoreBoard">
+        <p><b>{state.meRef === state.turn ? 'My Turn' : 'Enemy Turn'}</b></p>
 
-      <div>
-        <span>Public deck left : {state.board?.publicDeck.length}</span>
-        <span>Points : {state?.me.taken.length}</span>
+        <p>
+          <b>Sets :</b>
+          <br>
+          Your points : {state.me?.score}
+          <br>
+          Enemy points : {state.enemyScore}
+        </p>
+
+        <p>
+          <b>Decks : </b><br>
+          Public cards left : {state.board?.publicDeck.length}
+          <br>
+          Tied cards : {state.tie?.taken.length}
+        </p>
+
+        <p>
+          <b>Cards you've taken :</b> <br>
+          Taken cards : {state?.me?.taken.length}
+          <br>
+          <b>Cards enemy's taken :</b>
+           <br>
+          Taken cards : {state?.enemyTaken}
+        </p>
+
+        <p>
+          Helper: <br>
+          The special of the first played card executes first.
+        </p>
       </div>
-    {/if}
+      
+      {#if state.board}
+        <div class="board">
+          <Board animateCounter={state.animateCounter} mode={state.mode} board={state.board}></Board>
+        </div>
+      {/if}
+      
+      
+      {#if state.me && state.me.hand}
+        <div class="hand">
+          <Hand socket={socket} mode={state.mode} cards={state.me.hand}></Hand>
+        </div>
+      {/if}
+
+  </div>
 
 
   {/if}
-
-
-
-
 </main>
 
 
 <style>
+  .hand{
+    grid-area: hand;
+  }
+
+  .board{
+    grid-area: board;
+  }
+
+  .scoreBoard{
+    grid-area: scoreBoard;
+    display:flex;
+    flex-direction: column;
+  }
+
   main{
     height:100%;
     width:100%;
+  }
+
+  .all{
+    height:100%;
+    width:100%;
     display:grid;
-    grid-template-rows: 1fr;
+    grid-template: 
+    "board board board scoreBoard"
+    "hand hand hand scoreBoard";
+    grid-template-rows: 1fr 1fr;
+
   }
 </style>

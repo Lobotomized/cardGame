@@ -16,7 +16,9 @@ export type stateType = {
         value:number,
         better:turn
     },
-    meRef:turn
+    meRef:turn,
+    enemyScore:number,
+    enemyTaken:number
     
 }
 

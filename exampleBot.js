@@ -4,13 +4,14 @@ const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 const newG = require('./globby').newIOServer;
 const delayStartBlocker = require('./blockers').delayStartBlocker
-const {battle,special, drawCard,playCard,bet, setTurn, checkIfMyTurn, checkForBattle, cleanBoard, isRoundFinished, countRoundAndClean, giveStartingCards, oppositePlayer} = require('./helperMethods.js')
+const {battle,special, drawCard,playCard,bet, checkIfMyTurn, checkForBattle, cleanBoard, isRoundFinished, countRoundAndClean, giveStartingCards, oppositePlayer} = require('./helperMethods.js')
 const cardsObj = require('./cards.js')
 
 app.use('/static', express.static('public'))
 app.use('/assets', express.static('fe/dist/assets'))
 
-const ANIMATE_COUNTER = 50;
+const ANIMATE_COUNTER = 25;
+const ANIMATE_SPECIAL_COUNTER = 15;
 
 /*
 Effect - {
@@ -65,11 +66,13 @@ newG({
     baseState: {
         player1: {
             hand:[],
-            taken:[]
+            taken:[],
+            score:0
         },
         player2: {
             hand: [],
-            taken: []
+            taken: [],
+            score:0
         },
         currentBettingStep:1,
         tie: {
@@ -84,6 +87,7 @@ newG({
         turn: 'player1',
         mode:'betting',
         animateCounter: 0,
+        animateSpecialCounter:0,
         lastBattleWinner: null,
         tempMode:null,
         koeficient:null, //{value:1,better:'player1'},
@@ -130,10 +134,17 @@ newG({
         special(player.ref,oppositePlayer(player.ref), state);
 
         const winner = battle(state)
-        if(state.lastBattleWinner != 'tie'){
-            state.lastBattleWinner = winner;
+        let prevBattleWinner = state.lastBattleWinner
+        state.lastBattleWinner = winner;
+        if(winner === "tie" && prevBattleWinner && prevBattleWinner != "tie"){
+            state.turn = prevBattleWinner
         }
-        state.turn = state.lastBattleWinner
+        else if(winner === "tie"){
+            state.turn = "player1"
+        }
+        else{
+            state.turn = winner
+        }
         state.animateCounter = ANIMATE_COUNTER
     },
     minPlayers: 2,
@@ -156,6 +167,7 @@ newG({
         }
         if(isRoundFinished(state.player1.hand, state.player2.hand)){
             countRoundAndClean(state)
+            giveStartingCards(state)
             return
         }
         //State Change on every frame
@@ -167,6 +179,8 @@ newG({
         toReturn[oppositePlayer(playerRef)] = ''
         toReturn.me = state[playerRef]
         toReturn.meRef = playerRef
+        toReturn.enemyScore = state[oppositePlayer(playerRef)].score
+        toReturn.enemyTaken = state[oppositePlayer(playerRef)].taken.length
         return toReturn;
     },
     // connectFunction: function (state, playerRef) {

@@ -1,3 +1,5 @@
+const cardsObj = require('./cards.js')
+
 const bettingSteps  = [0,1,3,5,8,10]
 
 const specials = {
@@ -11,18 +13,23 @@ const specials = {
             enemyCard.intelligence = 0;
         }
     },
+    warExperience:function(meRef,enemyRef,state){
+        const card = state.board[meRef];
+        card[state.mode] += state.tie.taken.length
+    },
     training:function(meRef,enemyRef,state){
+        const card = state.board[meRef];
+
         card[state.mode] += 3;
     },
     entangle:function(meRef,enemyRef,state){
         const enemyCard = state.board[enemyRef]
         enemyCard.agility = 1;
     },
-    firstPunch:function(meRef,enemyRef,state){
-        const enemyCard = state.board[enemyRef]
-
-        enemyCard.special = specials[none];
-        enemyCard.descriptionTitle= "No special"
+    haste:function(meRef,enemyRef,state){
+        state[meRef].hand.forEach((card)  => {
+            card.agility+=1;
+        })
     },
     curse:function(meRef,enemyRef,state){
         const enemyFirstCard = state[enemyRef].hand[0]
@@ -58,17 +65,20 @@ const specials = {
             card.strength += 6;
         }
     },
-    hell: function(mRef,enemyRef,state){
+    hell: function(meRef,enemyRef,state){
         const takenCount = parseInt(state[meRef].taken.length/2)
         const card = state.board[meRef];
-        card[mode]+= takenCount;
+        card[state.mode]+= takenCount;
     },
-    copy:function(mRef,enemyRef,state){
+    copy:function(meRef,enemyRef,state){
+        console.log("tuka")
         const card = state.board[meRef];
         const enemyCard = state.board[enemyRef]
-        if(card[state.mode] < enemyCard[state.mode] && state[mRef][0]){
-            card[state.mode] = state[meRef][0][state.mode]
-        }        
+        if(card[state.mode] < enemyCard[state.mode] && state[meRef].hand[0]){
+            console.log("Na vtoroto")
+            card[state.mode] = state[meRef].hand[0][state.mode]
+        } 
+        console.log(card , '  na tretoto')       
     }
 }
 
@@ -189,12 +199,13 @@ module.exports = {
         else if (playerOnePoints < playerTwoPoints){
             state.player2.score += playerTwoKoeficient
         }
-
-        state.board.publicDeck = [...state.player1.taken, ...state.player2.taken, ...state.tie.taken];
+        state.board.publicDeck = Object.values(cardsObj);
         state.player1.taken = [];
         state.player2.taken = [];
-        state.tie.taken = []
-        
+        state.tie.taken = [];
+        state.mode = 'betting';
+        state.currentBettingStep = 1;
+        state.koeficient = null
         
     },
     giveStartingCards: function(state){
