@@ -122,7 +122,7 @@ module.exports = {
         if(state.currentBettingStep === 5){
             state.koeficient = {
                 better:player,
-                value:bettingSteps[state.currentBettingStep-1]
+                value:bettingSteps[state.currentBettingStep]
             }
             state.turn = player;
             return move.mode
@@ -136,7 +136,7 @@ module.exports = {
             state.currentBettingStep+=1;
             state.koeficient = {
                 better:player,
-                value:bettingSteps[state.currentBettingStep-1]
+                value:bettingSteps[state.currentBettingStep]
             }
             return 'betting'
         }
