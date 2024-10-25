@@ -40,11 +40,11 @@ module.exports = {
         cardTitle:"Knight",
         special:"warExperience",
         animation:"knight",
-        agility:4,
+        agility:6,
         intelligence:4,
         strength:8,
         descriptionTitle:"War Experience",
-        description:"+1 for every tied card."
+        description:"+1 to the voted stat for every tied card."
     }
     ,
 
