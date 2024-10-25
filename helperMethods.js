@@ -71,14 +71,11 @@ const specials = {
         card[state.mode]+= takenCount;
     },
     copy:function(meRef,enemyRef,state){
-        console.log("tuka")
         const card = state.board[meRef];
         const enemyCard = state.board[enemyRef]
         if(card[state.mode] < enemyCard[state.mode] && state[meRef].hand[0]){
-            console.log("Na vtoroto")
             card[state.mode] = state[meRef].hand[0][state.mode]
         } 
-        console.log(card , '  na tretoto')       
     }
 }
 
@@ -199,7 +196,7 @@ module.exports = {
         else if (playerOnePoints < playerTwoPoints){
             state.player2.score += playerTwoKoeficient
         }
-        state.board.publicDeck = Object.values(cardsObj);
+        state.board.publicDeck = JSON.parse(JSON.stringify(Object.values(cardsObj)));
         state.player1.taken = [];
         state.player2.taken = [];
         state.tie.taken = [];
