@@ -191,9 +191,11 @@ module.exports = {
         const playerTwoKoeficient = state.koeficient.better === 'player1' ? state.koeficient.value : 1
         if(playerOnePoints > playerTwoPoints){
             state.player1.score += playerOneKoeficient
+            state.turn = "player1"
         }
         else if (playerOnePoints < playerTwoPoints){
             state.player2.score += playerTwoKoeficient
+            state.turn = "player2"
         }
         state.board.publicDeck = JSON.parse(JSON.stringify(Object.values(cardsObj)));
         state.player1.taken = [];

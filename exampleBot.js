@@ -109,7 +109,13 @@ newG({
                 state.tempMode = null
             }
             if(move.mode || move.giveUp){
-                state.turn = oppositePlayer(state.turn)
+                //Vinagi dai pyrviq hod na tozi, koito e vdignal
+                if(state.koeficient.value < 10){
+                    state.turn = oppositePlayer(player.ref)
+                }
+                else{
+                    state.turn = player.ref
+                }
             }
             return
         }
@@ -117,7 +123,7 @@ newG({
             return
         }
         
-        //set Turn if
+        //set turn after one player played card
         if(state.board['player1']){
             state.turn = 'player2'
         }
@@ -135,6 +141,7 @@ newG({
         const winner = battle(state)
         let prevBattleWinner = state.lastBattleWinner
         state.lastBattleWinner = winner;
+        //Set turn after battle
         if(winner === "tie" && prevBattleWinner && prevBattleWinner != "tie"){
             state.turn = prevBattleWinner
         }
