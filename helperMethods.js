@@ -92,7 +92,6 @@ module.exports = {
     },
     special:function(meRef, enemyRef,state){
         const card = state.board[meRef]
-        console.log(card.special)
         specials[card.special](meRef,enemyRef,state)
     },
     oppositePlayer:function(player){
@@ -133,11 +132,11 @@ module.exports = {
         }
         else{
             state.tempMode = move.mode;
-            state.currentBettingStep+=1;
             state.koeficient = {
                 better:player,
                 value:bettingSteps[state.currentBettingStep]
             }
+            state.currentBettingStep+=1;
             return 'betting'
         }
     },

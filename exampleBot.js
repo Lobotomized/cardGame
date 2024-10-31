@@ -87,7 +87,6 @@ newG({
         turn: 'player1',
         mode:'betting',
         animateCounter: 0,
-        animateSpecialCounter:0,
         lastBattleWinner: null,
         tempMode:null,
         koeficient:null, //{value:1,better:'player1'},

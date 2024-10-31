@@ -17,7 +17,6 @@
     </div>
 
     <div style={animateCounter===0 ? "" : `opacity:${((70-animateCounter)/50)}`} class="battleGround"> 
-        <!-- ${((70-animateCounter)/50)} -->
         {#if board.winnerCard}
                 <Card  mode={mode} card={board.winnerCard}></Card>
         {/if}
