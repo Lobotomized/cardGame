@@ -1,6 +1,8 @@
 <script lang="ts">
+import type { stateType } from "./types/State";
+
 export let socket;
-export let state;
+export let state:stateType;
 
 $:myTurn = state.turn === state.meRef;
 $:isMyTurn = myTurn ? "Your turn" : "Enemies turn";

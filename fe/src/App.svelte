@@ -4,6 +4,7 @@
   import Vote from './Vote.svelte'
   import Board from './Board.svelte'
     import type { stateType } from './types/State';
+    import Endscreen from './Endscreen.svelte';
 
   let socket = io();
   let state:stateType | null  = null;
@@ -17,6 +18,9 @@
 <main>
   {#if state}
   <Vote socket={socket} state={state}></Vote>
+  {/if}
+  {#if state}
+  <Endscreen state={state}></Endscreen>
   {/if}
   {#if state}
   <div class="all">

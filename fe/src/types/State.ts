@@ -27,7 +27,7 @@ export type turn = 'player1' | 'player2' | null
 export type player = {
     hand:CardType[],
     taken:CardType[],
-    score:Number
+    score:number
 }
 
 export type Board = {
