@@ -9,6 +9,7 @@
 </script>
 
 
+
 <div class="cards">
 
         {#each cards as card, cardIndex}
@@ -35,7 +36,8 @@
      .cards{
         display:flex;
         flex-direction: row;
-        flex-wrap: wrap;
+        /* flex-wrap: wrap; */
         gap:8px;
+        overflow-x:auto;
     }
 </style>

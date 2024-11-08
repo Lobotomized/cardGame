@@ -111,16 +111,16 @@
 
 @media only screen and (max-width: 750px) {
   .all {
-    grid-template: 
-    "board board board"
-    "hand hand hand"
-    "scoreBoard scoreBoard scoreBoard";
-    grid-template-rows: 1fr 1fr 0.5fr;
+    height:100%;
+    width:100%;
+    display:flex;
+    flex-direction:column;
   }
   .scoreBoard{
-      grid-area: scoreBoard;
+    display:none;
+    /* grid-area: scoreBoard;
       display:flex;
-      flex-direction: row;
+      flex-direction: row; */
     }
 }
 </style>
