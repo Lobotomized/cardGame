@@ -6,22 +6,44 @@
     export let board:Board;
     export let mode:modeType;
     export let animateCounter:number;
+
+    let hideCards:boolean = false;
+
+    $:{
+        let tempPlayedCards = 0;
+        if(board.player1){
+            tempPlayedCards++;
+        }
+        if(board.player2){
+            tempPlayedCards++
+        }
+        if(tempPlayedCards === 2){
+            hideCards = true;
+        }
+        else{
+            hideCards = false;
+        }
+    }
+
+    
+
+    
     
 </script>
 
 <div class="board">
-    <div style={animateCounter===0 ? "" : `opacity:${(1-((50-animateCounter)/50))}`} class="me">
+    <div style={!hideCards ? "" : `opacity:${(1-((50-animateCounter)/50))}`} class="me">
         {#if board.player1}
                 <Card card={board.player1} mode={mode}></Card>
         {/if}
     </div>
 
-    <div style={animateCounter===0 ? "" : `opacity:${((70-animateCounter)/50)}`} class="battleGround"> 
+    <div style={`opacity:${((70-animateCounter)/50)}`} class="battleGround"> 
         {#if board.winnerCard}
                 <Card  mode={mode} card={board.winnerCard}></Card>
         {/if}
     </div>
-    <div style={animateCounter===0 ? "" : `opacity:${(1-((50-animateCounter)/50))}`} class="enemy">
+    <div style={!hideCards ? "" : `opacity:${(1-((50-animateCounter)/50))}`} class="enemy">
         {#if board.player2}
                 <Card card={board.player2} mode={mode}></Card>
         {/if}

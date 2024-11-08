@@ -105,6 +105,22 @@
     "board board board scoreBoard"
     "hand hand hand scoreBoard";
     grid-template-rows: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
 
   }
+
+@media only screen and (max-width: 750px) {
+  .all {
+    grid-template: 
+    "board board board"
+    "hand hand hand"
+    "scoreBoard scoreBoard scoreBoard";
+    grid-template-rows: 1fr 1fr 0.5fr;
+  }
+  .scoreBoard{
+      grid-area: scoreBoard;
+      display:flex;
+      flex-direction: row;
+    }
+}
 </style>

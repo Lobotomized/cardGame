@@ -35,6 +35,7 @@
      .cards{
         display:flex;
         flex-direction: row;
+        flex-wrap: wrap;
         gap:8px;
     }
 </style>
