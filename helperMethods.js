@@ -118,7 +118,9 @@ module.exports = {
         return true;
     },
     bet:function(player, move, state){
-        if(state.currentBettingStep === 5){
+        console.log(move.giveUp, state.currentBettingStep)
+        if(state.currentBettingStep === 5 && !move.giveUp){
+            console.log("Tuka li vliza!?")
             state.koeficient = {
                 better:player,
                 value:bettingSteps[state.currentBettingStep]
@@ -128,6 +130,7 @@ module.exports = {
         }
         else if(move.giveUp){
             state.turn = module.exports.oppositePlayer(player)
+            console.log("temp mode ", state.tempMode)
             return state.tempMode;
         }
         else{
