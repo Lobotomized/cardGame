@@ -76,8 +76,8 @@ module.exports = {
         intelligence:3,
         strength:8,
         agility:12,
-        description:"No special",
-        descriptionTitle:""
+        description:"",
+        descriptionTitle:"No special"
     },
     copyCat: {
         cardTitle:"Copy Cat",

@@ -117,31 +117,37 @@ module.exports = {
         player.hand.splice(cardIndex, 1)
         return true;
     },
-    bet:function(player, move, state){
-        console.log(move.giveUp, state.currentBettingStep)
-        if(state.currentBettingStep === 5 && !move.giveUp){
-            console.log("Tuka li vliza!?")
-            state.koeficient = {
-                better:player,
-                value:bettingSteps[state.currentBettingStep]
-            }
-            state.turn = player;
-            return move.mode
-        }
-        else if(move.giveUp){
-            state.turn = module.exports.oppositePlayer(player)
-            console.log("temp mode ", state.tempMode)
+    bet: function (player, move, state) {
+        // Check if the player is giving up
+        if (move.giveUp) {
+            state.turn = module.exports.oppositePlayer(player);
             return state.tempMode;
         }
-        else{
+
+        // Check if the player is making a move
+        if (move.mode) {
+            // Check if it's the final betting step
+            if (state.currentBettingStep === 5) {
+                state.koeficient = {
+                    better: player,
+                    value: bettingSteps[state.currentBettingStep]
+                };
+                state.turn = player;
+                return move.mode;
+            }
+
+            // Update the betting step and koeficient
             state.tempMode = move.mode;
             state.koeficient = {
-                better:player,
-                value:bettingSteps[state.currentBettingStep]
-            }
-            state.currentBettingStep+=1;
-            return 'betting'
+                better: player,
+                value: bettingSteps[state.currentBettingStep]
+            };
+            state.currentBettingStep += 1;
+            return 'betting';
         }
+
+        // If no valid move is provided, return the current mode
+        return state.mode;
     },
     //Return true if battle and false if not
     checkForBattle: function(board){
@@ -200,13 +206,9 @@ module.exports = {
             state.player2.score += playerTwoKoeficient
             state.turn = "player2"
         }
-        state.board.publicDeck = JSON.parse(JSON.stringify(Object.values(cardsObj)));
-        state.player1.taken = [];
-        state.player2.taken = [];
-        state.tie.taken = [];
-        state.mode = 'betting';
-        state.currentBettingStep = 1;
-        state.koeficient = null
+        // Reset game state
+        resetGameState(state);
+        console.log("state after reset  : ", state)
         
     },
     giveStartingCards: function(state){
@@ -214,4 +216,23 @@ module.exports = {
         state.player1.hand = state.board.publicDeck.splice(-5)
         state.player2.hand = state.board.publicDeck.splice(-5);
     }
+}
+
+
+function resetGameState(state) {
+    // Reset board
+    state.board.publicDeck = JSON.parse(JSON.stringify(Object.values(cardsObj)));
+    state.board.player1 = null;
+    state.board.player2 = null;
+    state.board.winnerCard = null;
+
+    // Reset players' taken cards
+    state.player1.taken = [];
+    state.player2.taken = [];
+    state.tie.taken = [];
+
+    // Reset game mode and betting state
+    state.mode = 'betting';
+    state.currentBettingStep = 1;
+    state.koeficient = null;
 }

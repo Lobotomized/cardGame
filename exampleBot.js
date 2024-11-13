@@ -62,6 +62,76 @@ const genericSpecial = 'genericSpecial'
 
 const cards = Object.values(cardsObj)
 
+const moveFunction = function (player, move, state) {
+    // Check if it's the player's turn
+    if (!checkIfMyTurn(player.ref, state.turn)) {
+        return;
+    }
+
+    // Check if the game is in animation
+    if (state.animateCounter > 0) {
+        return;
+    }
+
+    // Handle betting phase
+    if (state.mode === 'betting') {
+        handleBettingPhase(player, move, state);
+        return;
+    }
+
+    // Handle playing phase
+    handlePlayingPhase(player, move, state);
+};
+
+const handleBettingPhase = function (player, move, state) {
+    if (!move.mode && !move.giveUp) {
+        return;
+    }
+
+    const theBet = bet(player.ref, move, state);
+    if (theBet !== 'betting') {
+        state.mode = theBet;
+        state.tempMode = null;
+    }
+
+    if (move.mode || move.giveUp) {
+        state.turn = state.koeficient.value < 10 ? oppositePlayer(player.ref) : player.ref;
+    }
+};
+
+const handlePlayingPhase = function (player, move, state) {
+    if (!playCard(state[player.ref], player.ref, move.cardIndex, state.board)) {
+        return;
+    }
+
+    // Set turn after one player played card
+    state.turn = oppositePlayer(player.ref);
+
+    drawCard(state[player.ref], state.board.publicDeck);
+
+    if (!checkForBattle(state.board)) {
+        return;
+    }
+
+    special(oppositePlayer(player.ref), player.ref, state);
+    special(player.ref, oppositePlayer(player.ref), state);
+
+    const winner = battle(state);
+    const prevBattleWinner = state.lastBattleWinner;
+    state.lastBattleWinner = winner;
+
+    // Set turn after battle
+    if (winner === "tie" && prevBattleWinner && prevBattleWinner !== "tie") {
+        state.turn = prevBattleWinner;
+    } else if (winner === "tie") {
+        state.turn = "player1";
+    } else {
+        state.turn = winner;
+    }
+
+    state.animateCounter = ANIMATE_COUNTER;
+};
+
 newG({
     baseState: {
         player1: {
@@ -91,68 +161,7 @@ newG({
         tempMode:null,
         koeficient:null, //{value:1,better:'player1'},
     },
-    moveFunction: function (player, move, state) {
-        //State Change on Move
-        if(!checkIfMyTurn(player.ref,state.turn)){
-            return
-        }
-        if(state.animateCounter > 0){
-            return
-        }
-        if(state.mode === 'betting'){
-            if(!move.mode && !move.giveUp){
-                return
-            }
-            const theBet = bet(player.ref, move, state)
-            if(theBet != 'betting'){
-                state.mode = theBet;
-                state.tempMode = null
-            }
-            if(move.mode || move.giveUp){
-                //Vinagi dai pyrviq hod na tozi, koito e vdignal
-                if(state.koeficient.value < 10){
-                    state.turn = oppositePlayer(player.ref)
-                }
-                else{
-                    state.turn = player.ref
-                }
-            }
-            return
-        }
-        if(!playCard(state[player.ref],player.ref, move.cardIndex,state.board)){
-            return
-        }
-        
-        //set turn after one player played card
-        if(state.board['player1']){
-            state.turn = 'player2'
-        }
-        else if(state.board['player2']){
-            state.turn = 'player1'
-        }
-
-        drawCard(state[player.ref], state.board.publicDeck)
-        if(!checkForBattle(state.board)){
-            return
-        }
-        special(oppositePlayer(player.ref),player.ref, state)
-        special(player.ref,oppositePlayer(player.ref), state);
-
-        const winner = battle(state)
-        let prevBattleWinner = state.lastBattleWinner
-        state.lastBattleWinner = winner;
-        //Set turn after battle
-        if(winner === "tie" && prevBattleWinner && prevBattleWinner != "tie"){
-            state.turn = prevBattleWinner
-        }
-        else if(winner === "tie"){
-            state.turn = "player1"
-        }
-        else{
-            state.turn = winner
-        }
-        state.animateCounter = ANIMATE_COUNTER
-    },
+    moveFunction: moveFunction,
     minPlayers: 2,
     maxPlayers: 2, // Number of Players you want in a single game
     timeFunction: function (state) {
@@ -196,18 +205,18 @@ newG({
         state[playerRef] = undefined;
     }
 },
-    io,
-    false,
-    {
-        joinBotFunction: function (game, minPlayers, maxPlayers) {
-            if (game.players.length < 3 && game.players.length > 1) {
-                // game.joinBot('tralala')
-            }
-        },
-        botAIFunction: function (game, bot) {
-            game.move(bot.socketId, '')
+io,
+false,
+{
+    joinBotFunction: function (game, minPlayers, maxPlayers) {
+        if (game.players.length < 3 && game.players.length > 1) {
+            // game.joinBot('tralala')
         }
-    })
+    },
+    botAIFunction: function (game, bot) {
+        game.move(bot.socketId, '')
+    }
+})
 
 
 app.get('/', function (req, res) {
