@@ -32,7 +32,7 @@
         {cardTitle}
     </div>
     <div class="card-image">
-        <video height="150px" bind:this={video} muted preload="auto">
+        <video height="130px" bind:this={video} muted preload="auto">
             {#await import(`./assets/${animation}.mp4`) then { default: anim }}
                 <source src={anim} type="video/mp4">
             {/await}
@@ -69,7 +69,7 @@
     display: flex;
     flex-direction: column;
     width: calc(45px * var(--umnojitel));
-    height: 365px;
+    height: 400px;
     background: linear-gradient(180deg, #2a1f1a 0%, #110c08 100%);
     border: 2px solid #5c4322;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.9), 0 0 15px rgba(212, 175, 55, 0.1) inset;
@@ -91,7 +91,7 @@
     font-weight: 700;
     font-size: 1.1rem;
     text-align: center;
-    padding: 8px 5px;
+    padding: 6px 5px;
     background: linear-gradient(90deg, #1a100a, #3d2a13, #1a100a);
     border-bottom: 2px solid #5c4322;
     color: #ffd700;
@@ -99,6 +99,7 @@
     text-transform: uppercase;
     letter-spacing: 1px;
     margin: 0;
+    flex-shrink: 0;
  }
 
  .card-image {
@@ -109,6 +110,7 @@
     justify-content: center;
     align-items: center;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.6) inset;
+    flex-shrink: 0;
  }
 
  video {
@@ -119,23 +121,39 @@
 
  .description {
     text-align: center;
-    padding: 10px 12px;
+    padding: 8px 10px;
     margin: 0;
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     background: rgba(15, 10, 6, 0.6);
     border-bottom: 2px solid #5c4322;
-    line-height: 1.4;
+    line-height: 1.3;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    overflow-y: auto;
+ }
+
+ /* Custom scrollbar for description */
+ .description::-webkit-scrollbar {
+    width: 4px;
+ }
+ .description::-webkit-scrollbar-track {
+    background: rgba(10, 6, 4, 0.8);
+ }
+ .description::-webkit-scrollbar-thumb {
+    background: #5c4322;
+    border-radius: 2px;
+ }
+ .description::-webkit-scrollbar-thumb:hover {
+    background: #ffd700;
  }
 
  .description b {
     color: #ffd700;
-    font-size: 1rem;
+    font-size: 0.95rem;
     margin-bottom: 4px;
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -149,6 +167,7 @@
     padding: 8px 10px;
     background: linear-gradient(180deg, #1a100a 0%, #0a0604 100%);
     gap: 8px;
+    flex-shrink: 0;
  }
 
  .stat {

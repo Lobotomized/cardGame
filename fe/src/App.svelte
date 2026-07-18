@@ -42,18 +42,6 @@
         </div>
 
         <div class="score-section">
-          <div class="section-title">DECKS</div>
-          <div class="stat-row">
-            <span>Public Cards Left:</span>
-            <span class="stat-value">{state.board?.publicDeck.length}</span>
-          </div>
-          <div class="stat-row">
-            <span>Tied Cards:</span>
-            <span class="stat-value">{state.tie?.taken.length}</span>
-          </div>
-        </div>
-
-        <div class="score-section">
           <div class="section-title">CARDS TAKEN</div>
           <div class="stat-row">
             <span>By You:</span>
@@ -63,6 +51,10 @@
             <span>By Enemy:</span>
             <span class="stat-value">{state?.enemyTaken}</span>
           </div>
+          <div class="stat-row">
+            <span>Tied Cards:</span>
+            <span class="stat-value">{state.tie?.taken.length}</span>
+          </div>
         </div>
 
         <div class="helper-box">
@@ -71,12 +63,21 @@
         </div>
       </div>
       
-      {#if state.board}
-        <div class="board">
-          <Board mode={state.mode} board={state.board}></Board>
+      {#if state.enemyHandSize !== undefined}
+        <div class="enemyHand">
+          <div class="cards">
+            {#each Array(state.enemyHandSize) as _}
+              <div class="card-back"></div>
+            {/each}
+          </div>
         </div>
       {/if}
-      
+
+      {#if state.board}
+        <div class="board">
+          <Board mode={state.mode} board={state.board} meRef={state.meRef}></Board>
+        </div>
+      {/if}
       
       {#if state.me && state.me.hand}
         <div class="hand">
@@ -96,6 +97,32 @@
 
   .hand{
     grid-area: hand;
+    padding-bottom: 20px;
+  }
+
+  .enemyHand{
+    grid-area: enemyHand;
+    padding-top: 20px;
+  }
+
+  .cards {
+    display:flex;
+    flex-direction: row;
+    gap:8px;
+    overflow-x:auto;
+    justify-content: center;
+  }
+
+  .card-back {
+    width: 225px; /* 45px * 5 */
+    height: 400px;
+    background: linear-gradient(135deg, #3a0a0a 0%, #0f0202 100%);
+    border: 2px solid #8a0b0b;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.9), 0 0 15px rgba(255, 0, 0, 0.2) inset;
+    background-image: repeating-linear-gradient(45deg, #1a0505 25%, transparent 25%, transparent 75%, #1a0505 75%, #1a0505), repeating-linear-gradient(45deg, #1a0505 25%, #2a0a0a 25%, #2a0a0a 75%, #1a0505 75%, #1a0505);
+    background-position: 0 0, 10px 10px;
+    background-size: 20px 20px;
   }
 
   .board{
@@ -223,9 +250,10 @@
     width:100%;
     display:grid;
     grid-template: 
+    "enemyHand enemyHand enemyHand scoreBoard"
     "board board board scoreBoard"
     "hand hand hand scoreBoard";
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: auto 1fr auto;
     grid-template-columns: 1fr 1fr 1fr 1fr;
 
   }

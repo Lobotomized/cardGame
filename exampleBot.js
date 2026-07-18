@@ -185,6 +185,7 @@ newG({
         toReturn.meRef = playerRef
         toReturn.enemyScore = state[oppositePlayer(playerRef)].score
         toReturn.enemyTaken = state[oppositePlayer(playerRef)].taken.length
+        toReturn.enemyHandSize = state[oppositePlayer(playerRef)].hand.length
         return toReturn;
     },
     // connectFunction: function (state, playerRef) {
