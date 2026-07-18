@@ -55,13 +55,14 @@ const modes:string[] = [
 
 <style>
   dialog {
-    background: linear-gradient(180deg, #1f140e 0%, #0a0604 100%);
-    border: 2px solid #b38b14;
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.9), 0 0 10px rgba(212, 175, 55, 0.2) inset;
-    border-radius: 8px;
-    color: #fdf5e6;
+    background: #fdfaf6;
+    background-image: var(--paper-texture), linear-gradient(180deg, #fdfaf6 0%, #e8f0e6 100%);
+    border: 4px solid #8fb996;
+    box-shadow: 0 10px 25px rgba(143, 185, 150, 0.3);
+    border-radius: 16px 16px 24px 24px;
+    color: #4a5d4e;
     font-family: 'Quicksand', sans-serif;
-    z-index: 10;
+    z-index: 100;
     position: absolute;
     left: 0;
     right: 0;
@@ -74,7 +75,8 @@ const modes:string[] = [
   }
   
   dialog::backdrop {
-    background: rgba(0, 0, 0, 0.85);
+    background: rgba(44, 62, 46, 0.6);
+    backdrop-filter: blur(3px);
   }
 
  .container {
@@ -85,19 +87,19 @@ const modes:string[] = [
 
  .enemy-vote {
    font-size: 1.2rem;
-   color: #ffd700;
-   font-weight: 600;
-   text-shadow: 2px 2px 4px rgba(0,0,0,0.9);
+   color: #5c8065;
+   font-weight: 700;
+   text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.8);
    margin-bottom: 1rem;
    display: block;
  }
 
  .enemy-voting-text {
-   color: #ffd700;
+   color: #5c8065;
    font-size: 1.8rem;
    text-transform: uppercase;
    letter-spacing: 2px;
-   text-shadow: 2px 2px 4px rgba(0,0,0,0.9);
+   text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.8);
    margin: 2rem 0;
  }
 
@@ -105,49 +107,49 @@ const modes:string[] = [
   font-family: 'Quicksand', sans-serif;
   font-weight: 700;
   font-size: 1.1rem;
-  color: #ffffff;
+  color: #2c3e2e;
   padding: 12px 24px;
-  border-radius: 6px;
-  background: linear-gradient(180deg, #3d2a13 0%, #1a100a 100%);
+  border-radius: 8px;
+  background: linear-gradient(180deg, #ffffff 0%, #e8f0e6 100%);
   outline: none;
-  border: 2px solid #b38b14;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.8);
+  border: 2px solid #8fb996;
+  box-shadow: 0 4px 6px rgba(143, 185, 150, 0.15);
   cursor: pointer;
   transition: all 0.2s ease-out;
   text-transform: uppercase;
   letter-spacing: 1px;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
  }
 
  button:hover {
-  background: linear-gradient(180deg, #5c4322 0%, #2a1a0f 100%);
-  border-color: #ffd700;
-  color: #ffffff;
-  box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+  background: linear-gradient(180deg, #fdfaf6 0%, #d4e5d1 100%);
+  border-color: #5c8065;
+  color: #2c3e2e;
+  box-shadow: 0 4px 10px rgba(143, 185, 150, 0.3);
   transform: translateY(-2px);
  }
  
  .give-up-btn {
    margin-top: 1rem;
-   background: linear-gradient(180deg, #4a1515 0%, #2a0a0a 100%);
-   border-color: #cc3333;
-   color: #ffcccc;
+   background: linear-gradient(180deg, #ffe6e6 0%, #ffcccc 100%);
+   border-color: #ff9999;
+   color: #cc3333;
  }
 
  .give-up-btn:hover {
-   background: linear-gradient(180deg, #6a1a1a 0%, #3a0a0a 100%);
-   border-color: #ff4444;
-   box-shadow: 0 0 15px rgba(255, 68, 68, 0.4);
+   background: linear-gradient(180deg, #ffcccc 0%, #ffb3b3 100%);
+   border-color: #ff6666;
+   box-shadow: 0 4px 10px rgba(255, 102, 102, 0.3);
+   color: #990000;
  }
 
  .modeName {
-  color: #ffd700;
+  color: #5c8065;
   text-transform: uppercase;
   letter-spacing: 2px;
   font-size: 1.4rem;
   margin-bottom: 15px;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
-  border-bottom: 1px solid #5c4322;
+  text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.8);
+  border-bottom: 2px solid #b5d5b7;
   padding-bottom: 5px;
   width: 100%;
  }
@@ -156,12 +158,13 @@ const modes:string[] = [
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: rgba(15, 10, 6, 0.85);
-  border: 1px solid #5c4322;
+  background: rgba(253, 250, 246, 0.8);
+  background-image: var(--paper-texture);
+  border: 2px dashed #8fb996;
   padding: 1.5rem 1rem;
-  border-radius: 8px;
+  border-radius: 16px;
   width: 100%;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6) inset;
+  box-shadow: 0 2px 6px rgba(143, 185, 150, 0.1);
  }
 
  .bets {

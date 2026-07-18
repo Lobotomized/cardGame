@@ -153,6 +153,7 @@ newG({
         lastBattleWinner: null,
         tempMode:null,
         koeficient:null, //{value:1,better:'player1'},
+        roundEndTimer: null,
     },
     moveFunction: moveFunction,
     minPlayers: 2,
@@ -169,9 +170,15 @@ newG({
             //Prepare for next turn
             cleanBoard(state.board, state[state.lastBattleWinner])
         }
+        
         if(isRoundFinished(state.player1.hand, state.player2.hand)){
-            countRoundAndClean(state)
-            giveStartingCards(state)
+            if (!state.roundEndTimer) {
+                state.roundEndTimer = Date.now() + 3000;
+            } else if (Date.now() >= state.roundEndTimer) {
+                countRoundAndClean(state)
+                giveStartingCards(state)
+                state.roundEndTimer = null;
+            }
             return
         }
         //State Change on every frame

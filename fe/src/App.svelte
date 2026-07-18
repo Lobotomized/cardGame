@@ -8,6 +8,7 @@
 
   let socket = io();
   let state:stateType | null  = null;
+  let isAnimating = false;
 
   socket.on('returnState', (innerState:stateType) => {
       state = innerState;
@@ -75,13 +76,13 @@
 
       {#if state.board}
         <div class="board">
-          <Board mode={state.mode} board={state.board} meRef={state.meRef}></Board>
+          <Board mode={state.mode} board={state.board} meRef={state.meRef} bind:isAnimating></Board>
         </div>
       {/if}
       
       {#if state.me && state.me.hand}
         <div class="hand">
-          <Hand socket={socket} mode={state.mode} cards={state.me.hand}></Hand>
+          <Hand socket={socket} mode={state.mode} cards={state.me.hand} isAnimating={isAnimating}></Hand>
         </div>
       {/if}
 
@@ -116,13 +117,35 @@
   .card-back {
     width: 225px; /* 45px * 5 */
     height: 400px;
-    background: linear-gradient(135deg, #3a0a0a 0%, #0f0202 100%);
-    border: 2px solid #8a0b0b;
-    border-radius: 12px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.9), 0 0 15px rgba(255, 0, 0, 0.2) inset;
-    background-image: repeating-linear-gradient(45deg, #1a0505 25%, transparent 25%, transparent 75%, #1a0505 75%, #1a0505), repeating-linear-gradient(45deg, #1a0505 25%, #2a0a0a 25%, #2a0a0a 75%, #1a0505 75%, #1a0505);
-    background-position: 0 0, 10px 10px;
-    background-size: 20px 20px;
+    background: linear-gradient(135deg, #8fb996 0%, #5c8065 100%);
+    background-image: var(--paper-texture), linear-gradient(135deg, #8fb996 0%, #5c8065 100%);
+    border: 4px solid #4a5d4e;
+    border-radius: 16px;
+    box-shadow: 0 6px 15px rgba(74, 93, 78, 0.3), inset 0 0 20px rgba(0,0,0,0.1);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .card-back::before {
+    content: '';
+    position: absolute;
+    top: 12px; left: 12px; right: 12px; bottom: 12px;
+    border: 2px dashed rgba(253, 250, 246, 0.6);
+    border-radius: 10px;
+  }
+
+  .card-back::after {
+    content: '🌿';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 4rem;
+    color: #fdfaf6;
+    opacity: 0.8;
+    filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.2));
   }
 
   .board{
@@ -135,10 +158,11 @@
     flex-direction: column;
     gap: 1.2rem;
     padding: 1.5rem;
-    background: linear-gradient(180deg, #1f140e 0%, #0a0604 100%);
-    border-left: 2px solid #b38b14;
-    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.8);
-    color: #fdf5e6;
+    background: linear-gradient(180deg, rgba(253, 250, 246, 0.9) 0%, rgba(232, 240, 230, 0.9) 100%);
+    background-image: var(--paper-texture), linear-gradient(180deg, rgba(253, 250, 246, 0.9) 0%, rgba(232, 240, 230, 0.9) 100%);
+    border-left: 3px solid #8fb996;
+    box-shadow: -5px 0 20px rgba(92, 128, 101, 0.15);
+    color: #2c3e2e;
     font-family: 'Quicksand', sans-serif;
     overflow-y: auto;
   }
@@ -148,12 +172,13 @@
     font-weight: 700;
     text-align: center;
     padding: 1rem;
-    border-radius: 4px;
-    background: linear-gradient(90deg, #1a100a, #2a1a0f, #1a100a);
-    border: 1px solid #8a6b08;
-    color: #d4af37;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.8) inset, 0 0 10px rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    background: rgba(253, 250, 246, 0.9);
+    background-image: var(--paper-texture), linear-gradient(90deg, rgba(253, 250, 246, 0.9), rgba(232, 240, 230, 0.9));
+    border: 3px solid #a3c9a6;
+    color: #5c8065;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+    box-shadow: 0 4px 6px rgba(143, 185, 150, 0.15);
     letter-spacing: 2px;
     text-transform: uppercase;
     transition: all 0.3s ease;
@@ -161,19 +186,21 @@
 
   .turn-indicator.my-turn {
     color: #ffffff;
-    border-color: #ffd700;
-    background: linear-gradient(90deg, #3d2a13, #5c4322, #3d2a13);
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9), 0 0 10px rgba(255, 215, 0, 0.5);
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.8) inset, 0 0 20px rgba(0, 0, 0, 0.6);
+    border-color: #f7a072;
+    background: rgba(247, 160, 114, 0.9);
+    background-image: var(--paper-texture), linear-gradient(90deg, rgba(247, 160, 114, 0.9), rgba(243, 210, 193, 0.9));
+    text-shadow: 1px 1px 2px rgba(247, 160, 114, 0.8);
+    box-shadow: 0 4px 12px rgba(247, 160, 114, 0.4);
   }
 
   .score-section {
-    background: rgba(15, 10, 6, 0.85);
-    border: 1px solid #5c4322;
-    border-radius: 6px;
+    background: rgba(253, 250, 246, 0.85);
+    background-image: var(--paper-texture), linear-gradient(180deg, rgba(253, 250, 246, 0.85), rgba(232, 240, 230, 0.85));
+    border: 2px solid #b5d5b7;
+    border-radius: 8px;
     padding: 1rem;
     position: relative;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.8);
+    box-shadow: 0 4px 6px rgba(143, 185, 150, 0.1);
   }
 
   .score-section::before {
@@ -181,21 +208,32 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 3px;
+    width: 4px;
     height: 100%;
-    background: #ffd700;
-    box-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
+    background: #8fb996;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
   }
 
   .section-title {
     font-size: 1.2rem;
-    font-weight: 700;
-    color: #ffd700;
+    font-weight: 800;
+    color: #4a5d4e;
     margin-bottom: 0.8rem;
-    letter-spacing: 1.5px;
-    border-bottom: 1px solid #5c4322;
-    padding-bottom: 0.3rem;
+    letter-spacing: 2px;
+    border-bottom: 2px dashed #a3c9a6;
+    padding-bottom: 0.5rem;
     text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .section-title::before, .section-title::after {
+    content: '✿';
+    color: #8fb996;
+    font-size: 0.9rem;
   }
 
   .stat-row {
@@ -205,6 +243,7 @@
     margin-bottom: 0.5rem;
     font-size: 1rem;
     font-weight: 600;
+    color: #4a5d4e;
   }
 
   .stat-row:last-child {
@@ -212,20 +251,21 @@
   }
 
   .stat-value {
-    color: #ffffff;
+    color: #2c3e2e;
     font-weight: 700;
     font-size: 1.2rem;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
   }
 
   .helper-box {
     margin-top: auto;
-    background: rgba(15, 10, 6, 0.85);
-    border: 1px dashed #b38b14;
+    background: rgba(253, 250, 246, 0.85);
+    background-image: var(--paper-texture), linear-gradient(180deg, rgba(253, 250, 246, 0.85), rgba(232, 240, 230, 0.85));
+    border: 2px dashed #a3c9a6;
     padding: 1rem;
-    border-radius: 4px;
+    border-radius: 8px;
     font-size: 0.9rem;
     line-height: 1.4;
+    color: #4a5d4e;
   }
 
   .helper-box p {
@@ -233,7 +273,7 @@
   }
 
   .helper-title {
-    color: #ffd700;
+    color: #5c8065;
     font-weight: 700;
     margin-bottom: 0.5rem;
     text-transform: uppercase;

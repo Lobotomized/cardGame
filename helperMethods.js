@@ -241,4 +241,5 @@ function resetGameState(state) {
     state.mode = 'betting';
     state.currentBettingStep = 1;
     state.koeficient = null;
+    state.roundEndTimer = null;
 }

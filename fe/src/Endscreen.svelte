@@ -20,13 +20,14 @@ export let state:stateType;
 
 <style>
 dialog {
-    background: linear-gradient(180deg, #1f140e 0%, #0a0604 100%);
-    border: 2px solid #b38b14;
-    box-shadow: 0 0 30px rgba(0, 0, 0, 0.9), 0 0 10px rgba(212, 175, 55, 0.2) inset;
-    border-radius: 8px;
-    color: #ffd700;
+    background: #fdfaf6;
+    background-image: var(--paper-texture), linear-gradient(180deg, #fdfaf6 0%, #e8f0e6 100%);
+    border: 4px solid #8fb996;
+    box-shadow: 0 10px 25px rgba(143, 185, 150, 0.3);
+    border-radius: 16px 16px 24px 24px;
+    color: #4a5d4e;
     font-family: 'Quicksand', sans-serif;
-    z-index: 10;
+    z-index: 100;
     position: absolute;
     left: 0;
     right: 0;
@@ -37,7 +38,8 @@ dialog {
 }
 
 dialog::backdrop {
-    background: rgba(0, 0, 0, 0.85);
+    background: rgba(44, 62, 46, 0.6);
+    backdrop-filter: blur(3px);
 }
 
 .container {
@@ -52,8 +54,9 @@ dialog::backdrop {
 
 h1 {
     font-size: 3rem;
+    color: #5c8065;
     text-transform: uppercase;
     letter-spacing: 3px;
-    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.9);
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
 }
 </style>
