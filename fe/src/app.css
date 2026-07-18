@@ -1,14 +1,15 @@
 :root{
-    --card-background:#258c9f;
-    --active-stat-color:#6da4a7;
-    --letters-color:#122020;
-    --background: #DBD2E0;
+    --card-background: #2a1f1a;
+    --active-stat-color: #ffd700;
+    --letters-color: #fdf5e6;
+    --background: #0a0704;
 
 
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+    font-family: 'Quicksand', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
 }
 
 html, body, #app, main {
     height:100%;
     background:var(--background);
+    color: var(--letters-color);
 }

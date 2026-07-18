@@ -85,6 +85,11 @@ module.exports = {
             return;
         }
         winner.taken.push(board.player1, board.player2);
+        board.lastTrick = {
+            player1: board.player1,
+            player2: board.player2,
+            winnerCard: board.winnerCard
+        };
         board.player1 = null;
         board.player2 = null;
         board.winnerCard = null;
@@ -225,6 +230,7 @@ function resetGameState(state) {
     state.board.player1 = null;
     state.board.player2 = null;
     state.board.winnerCard = null;
+    state.board.lastTrick = null;
 
     // Reset players' taken cards
     state.player1.taken = [];

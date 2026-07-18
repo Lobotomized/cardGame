@@ -5,47 +5,49 @@
 
     export let board:Board;
     export let mode:modeType;
-    export let animateCounter:number;
 
-    let hideCards:boolean = false;
+    let animateCounter: number = 0;
+    let localAnimateTimer: any;
+    let currentTrick: any = null;
 
-    $:{
-        let tempPlayedCards = 0;
-        if(board.player1){
-            tempPlayedCards++;
-        }
-        if(board.player2){
-            tempPlayedCards++
-        }
-        if(tempPlayedCards === 2){
-            hideCards = true;
-        }
-        else{
-            hideCards = false;
+    $: {
+        if (board.lastTrick && JSON.stringify(currentTrick) !== JSON.stringify(board.lastTrick)) {
+            currentTrick = board.lastTrick;
+            animateCounter = 50;
+            clearInterval(localAnimateTimer);
+            localAnimateTimer = setInterval(() => {
+                if (animateCounter > 0) {
+                    animateCounter--;
+                } else {
+                    clearInterval(localAnimateTimer);
+                }
+            }, 50);
         }
     }
 
-    
-
-    
-    
+    let hideCards: boolean = false;
+    $: hideCards = animateCounter > 0;
 </script>
 
 <div class="board">
     <div style={!hideCards ? "" : `opacity:${(1-((50-animateCounter)/50))}`} class="me">
-        {#if board.player1}
-                <Card card={board.player1} mode={mode}></Card>
+        {#if animateCounter > 0 && currentTrick?.player1}
+            <Card card={currentTrick.player1} mode={mode}></Card>
+        {:else if board.player1}
+            <Card card={board.player1} mode={mode}></Card>
         {/if}
     </div>
 
     <div style={`opacity:${((70-animateCounter)/50)}`} class="battleGround"> 
-        {#if board.winnerCard}
-                <Card  mode={mode} card={board.winnerCard}></Card>
+        {#if animateCounter > 0 && currentTrick?.winnerCard}
+            <Card mode={mode} card={currentTrick.winnerCard}></Card>
         {/if}
     </div>
     <div style={!hideCards ? "" : `opacity:${(1-((50-animateCounter)/50))}`} class="enemy">
-        {#if board.player2}
-                <Card card={board.player2} mode={mode}></Card>
+        {#if animateCounter > 0 && currentTrick?.player2}
+            <Card card={currentTrick.player2} mode={mode}></Card>
+        {:else if board.player2}
+            <Card card={board.player2} mode={mode}></Card>
         {/if}
     </div>
 </div>

@@ -68,11 +68,6 @@ const moveFunction = function (player, move, state) {
         return;
     }
 
-    // Check if the game is in animation
-    if (state.animateCounter > 0) {
-        return;
-    }
-
     // Handle betting phase
     if (state.mode === 'betting') {
         handleBettingPhase(player, move, state);
@@ -128,8 +123,6 @@ const handlePlayingPhase = function (player, move, state) {
     } else {
         state.turn = winner;
     }
-
-    state.animateCounter = ANIMATE_COUNTER;
 };
 
 newG({
@@ -152,11 +145,11 @@ newG({
             player1: null,
             player2: null,
             winnerCard: null,
+            lastTrick: null,
             publicDeck: cards
         },
         turn: 'player1',
         mode:'betting',
-        animateCounter: 0,
         lastBattleWinner: null,
         tempMode:null,
         koeficient:null, //{value:1,better:'player1'},
@@ -171,11 +164,7 @@ newG({
             }
             return
         }
-        //Dokato namalqva animate countera animate the battle
-        if(state.animateCounter){
-            state.animateCounter--;
-            return;
-        }
+
         if(state.board.player1 && state.board.player2){
             //Prepare for next turn
             cleanBoard(state.board, state[state.lastBattleWinner])

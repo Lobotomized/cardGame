@@ -8,7 +8,6 @@ export type stateType = {
     board?:Board,
     turn:turn,
     mode:modeType,
-    animateCounter:number,
     lastBattleWinner: turn,
     tempMode: modeType,
     koeficient: {
@@ -34,5 +33,10 @@ export type Board = {
     player1:CardType,
     player2:CardType,
     winnerCard:CardType,
+    lastTrick?: {
+        player1:CardType,
+        player2:CardType,
+        winnerCard:CardType
+    },
     publicDeck:CardType[]
 }

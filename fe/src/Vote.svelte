@@ -21,7 +21,7 @@ const modes:string[] = [
         {#if myTurn}
         {#if !state?.koeficient?.value || state.koeficient.value < 10}
           {#if state?.koeficient}
-          <span>Enemy voted for {state.tempMode} with coefficient {bettingSteps[state.currentBettingStep-1]} to 1 </span>
+          <span class="enemy-vote">Enemy voted for {state.tempMode} with coefficient {bettingSteps[state.currentBettingStep-1]} to 1 </span>
           {/if}
           <div class="bets">
             {#each modes as mode}
@@ -39,7 +39,7 @@ const modes:string[] = [
         {/if}
         
         {#if state.currentBettingStep > 1}
-          <button on:click={() => {
+          <button class="give-up-btn" on:click={() => {
               socket.emit('move', {
                 giveUp:true
               })
@@ -47,63 +47,133 @@ const modes:string[] = [
         {/if}
       
       {:else}
-          <h3>Enemy is voting</h3>
+          <h3 class="enemy-voting-text">Enemy is voting...</h3>
       {/if}
     </div>
 
 </dialog>
 
 <style>
-    
-  dialog{
-    background:var(--card-background);
-    z-index:10;
+  dialog {
+    background: linear-gradient(180deg, #1f140e 0%, #0a0604 100%);
+    border: 2px solid #b38b14;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.9), 0 0 10px rgba(212, 175, 55, 0.2) inset;
+    border-radius: 8px;
+    color: #fdf5e6;
+    font-family: 'Quicksand', sans-serif;
+    z-index: 10;
     position: absolute;
     left: 0;
     right: 0;
     top: 0;
     bottom: 0;
     margin: auto;
+    padding: 2rem;
+    max-width: 500px;
+    text-align: center;
   }
- .container{
-  background:var(--card-background);
-  display:flex;
+  
+  dialog::backdrop {
+    background: rgba(0, 0, 0, 0.85);
+  }
+
+ .container {
+  display: flex;
   flex-direction: column;
- }
- button{
-  font-weight:bolder;
-  color:var(--letters-color);
-  padding:8px;
-  border-radius:12px;
-  background: var(--active-stat-color);
-  outline: none;
-  border: solid;
-  border-width: 3px;
-  cursor:pointer;
-  transition: 0.5s ease-out;
+  gap: 1.5rem;
  }
 
- button:hover{
-  background-color: var(--letters-color);
-  color:var(--active-stat-color);
+ .enemy-vote {
+   font-size: 1.2rem;
+   color: #ffd700;
+   font-weight: 600;
+   text-shadow: 2px 2px 4px rgba(0,0,0,0.9);
+   margin-bottom: 1rem;
+   display: block;
+ }
+
+ .enemy-voting-text {
+   color: #ffd700;
+   font-size: 1.8rem;
+   text-transform: uppercase;
+   letter-spacing: 2px;
+   text-shadow: 2px 2px 4px rgba(0,0,0,0.9);
+   margin: 2rem 0;
+ }
+
+ button {
+  font-family: 'Quicksand', sans-serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #ffffff;
+  padding: 12px 24px;
+  border-radius: 6px;
+  background: linear-gradient(180deg, #3d2a13 0%, #1a100a 100%);
+  outline: none;
+  border: 2px solid #b38b14;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.8);
+  cursor: pointer;
+  transition: all 0.2s ease-out;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
+ }
+
+ button:hover {
+  background: linear-gradient(180deg, #5c4322 0%, #2a1a0f 100%);
+  border-color: #ffd700;
+  color: #ffffff;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+  transform: translateY(-2px);
  }
  
- .modeName{
-  line-clamp: 3;
+ .give-up-btn {
+   margin-top: 1rem;
+   background: linear-gradient(180deg, #4a1515 0%, #2a0a0a 100%);
+   border-color: #cc3333;
+   color: #ffcccc;
  }
 
- .modeBet{
-  display:flex;
+ .give-up-btn:hover {
+   background: linear-gradient(180deg, #6a1a1a 0%, #3a0a0a 100%);
+   border-color: #ff4444;
+   box-shadow: 0 0 15px rgba(255, 68, 68, 0.4);
+ }
+
+ .modeName {
+  color: #ffd700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 1.4rem;
+  margin-bottom: 15px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
+  border-bottom: 1px solid #5c4322;
+  padding-bottom: 5px;
+  width: 100%;
+ }
+
+ .modeBet {
+  display: flex;
   flex-direction: column;
   align-items: center;
-  margin-left:20px;
-  margin-right:20px;
+  background: rgba(15, 10, 6, 0.85);
+  border: 1px solid #5c4322;
+  padding: 1.5rem 1rem;
+  border-radius: 8px;
+  width: 100%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6) inset;
  }
 
- .bets{
-  display:flex;
+ .bets {
+  display: flex;
   flex-direction: row;
   justify-content: center;
-  margin-bottom:15px;
+  gap: 1.5rem;
+  margin-bottom: 15px;
+  margin-top: 10px;
+ }
+
+ h3 {
+   margin: 0;
  }
 </style>
