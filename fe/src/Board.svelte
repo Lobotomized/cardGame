@@ -115,27 +115,27 @@
     .me-container.clash {
         transform: translateX(120px) scale(1.1) rotate(5deg);
         z-index: 20;
-        filter: drop-shadow(0 0 20px rgba(247, 160, 114, 0.8));
+        filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.8));
     }
 
     .enemy-container.clash {
         transform: translateX(-120px) scale(1.1) rotate(-5deg);
         z-index: 20;
-        filter: drop-shadow(0 0 20px rgba(247, 160, 114, 0.8));
+        filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.8));
     }
 
     /* --- RESOLVE PHASE --- */
     .me-container.winner {
         transform: translateX(60px) scale(1.2);
         z-index: 30;
-        filter: drop-shadow(0 0 40px rgba(243, 210, 193, 0.9)) drop-shadow(0 0 20px rgba(143, 185, 150, 0.8));
+        filter: drop-shadow(0 0 40px rgba(255, 255, 255, 0.9)) drop-shadow(0 0 20px rgba(200, 200, 200, 0.8));
         transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
     
     .enemy-container.winner {
         transform: translateX(-60px) scale(1.2);
         z-index: 30;
-        filter: drop-shadow(0 0 40px rgba(243, 210, 193, 0.9)) drop-shadow(0 0 20px rgba(143, 185, 150, 0.8));
+        filter: drop-shadow(0 0 40px rgba(255, 255, 255, 0.9)) drop-shadow(0 0 20px rgba(200, 200, 200, 0.8));
         transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
@@ -185,17 +185,17 @@
     .deck-card {
         width: 150px;
         height: 220px;
-        background: linear-gradient(135deg, #8fb996 0%, #5c8065 100%);
-        background-image: var(--paper-texture), linear-gradient(135deg, #8fb996 0%, #5c8065 100%);
-        border: 4px solid #4a5d4e;
+        background: linear-gradient(135deg, #333333 0%, #111111 100%);
+        background-image: var(--paper-texture), linear-gradient(135deg, #333333 0%, #111111 100%);
+        border: 4px solid #555555;
         border-radius: 16px;
-        box-shadow: 0 6px 15px rgba(74, 93, 78, 0.3), inset 0 0 20px rgba(0,0,0,0.1);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255,255,255,0.05);
         position: relative;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        color: #fdfaf6;
+        color: #ffffff;
         font-family: 'Quicksand', sans-serif;
     }
 
@@ -203,27 +203,27 @@
         content: '';
         position: absolute;
         top: 8px; left: 8px; right: 8px; bottom: 8px;
-        border: 2px dashed rgba(253, 250, 246, 0.6);
+        border: 2px dashed rgba(255, 255, 255, 0.3);
         border-radius: 10px;
         pointer-events: none;
     }
 
     .deck-card::after {
-        content: '🌿';
+        content: '💀';
         position: absolute;
         top: 10px;
         right: 10px;
         font-size: 1.5rem;
-        color: #fdfaf6;
+        color: #ffffff;
         opacity: 0.6;
-        filter: drop-shadow(1px 2px 3px rgba(0,0,0,0.2));
+        filter: drop-shadow(1px 2px 3px rgba(0,0,0,0.5));
         pointer-events: none;
     }
 
     .deck-count {
         font-size: 3.5rem;
         font-weight: 800;
-        text-shadow: 2px 2px 4px rgba(74, 93, 78, 0.6);
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
         z-index: 2;
     }
 
@@ -231,7 +231,7 @@
         font-size: 1rem;
         font-weight: 700;
         letter-spacing: 2px;
-        text-shadow: 1px 1px 2px rgba(74, 93, 78, 0.6);
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
         z-index: 2;
     }
 </style>

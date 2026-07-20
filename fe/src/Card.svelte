@@ -70,10 +70,10 @@
     flex-direction: column;
     width: calc(45px * var(--umnojitel));
     height: 400px;
-    background: #fdfaf6;
-    background-image: var(--paper-texture), linear-gradient(to bottom, #fdfaf6, #e8f0e6);
-    border: 4px solid #8fb996;
-    box-shadow: 0 4px 12px rgba(143, 185, 150, 0.25);
+    background: #1a1a1a;
+    background-image: var(--paper-texture), linear-gradient(to bottom, #1a1a1a, #000000);
+    border: 4px solid #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
     cursor: pointer;
     border-radius: 12px 12px 24px 24px;
     transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
@@ -84,8 +84,8 @@
 
  .card:hover {
     transform: translateY(-8px);
-    box-shadow: 0 8px 16px rgba(143, 185, 150, 0.4);
-    border-color: #5c8065;
+    box-shadow: 0 8px 16px rgba(255, 255, 255, 0.2);
+    border-color: #cccccc;
  }
 
  .card-header {
@@ -94,9 +94,9 @@
     text-align: center;
     padding: 8px 5px;
     background: transparent;
-    border-bottom: 2px dashed #b5d5b7;
-    color: #4a5d4e;
-    text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.8);
+    border-bottom: 2px dashed #555555;
+    color: #ffffff;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
     text-transform: uppercase;
     letter-spacing: 1.5px;
     margin: 0;
@@ -109,14 +109,14 @@
 
  .card-header::before, .card-header::after {
     content: '✧';
-    color: #8fb996;
+    color: #ffffff;
     font-size: 0.9em;
  }
 
  .card-image {
     width: 100%;
-    border-bottom: 2px dashed #b5d5b7;
-    background: #ffffff;
+    border-bottom: 2px dashed #555555;
+    background: #000000;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -140,9 +140,9 @@
     flex-direction: column;
     justify-content: flex-start;
     background: transparent;
-    border-bottom: 2px dashed #b5d5b7;
+    border-bottom: 2px dashed #555555;
     line-height: 1.3;
-    color: #4a5d4e;
+    color: #dddddd;
     overflow-y: auto;
  }
 
@@ -151,18 +151,18 @@
     width: 4px;
  }
  .description::-webkit-scrollbar-track {
-    background: rgba(232, 240, 230, 0.8);
+    background: rgba(30, 30, 30, 0.8);
  }
  .description::-webkit-scrollbar-thumb {
-    background: #b5d5b7;
+    background: #555555;
     border-radius: 2px;
  }
  .description::-webkit-scrollbar-thumb:hover {
-    background: #8fb996;
+    background: #777777;
  }
 
  .description b {
-    color: #2c3e2e;
+    color: #ffffff;
     font-size: 0.95rem;
     margin-bottom: 4px;
     text-transform: uppercase;
@@ -184,19 +184,19 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border: 2px solid #b5d5b7;
+    border: 2px solid #555555;
     padding: 4px 0;
     flex: 1;
     border-radius: 12px;
-    background: rgba(255,255,255,0.7);
-    box-shadow: 0 2px 4px rgba(143, 185, 150, 0.1);
+    background: rgba(30, 30, 30, 0.9);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
     transition: all 0.3s ease;
  }
 
  .stat > h4 {
     margin: 0;
     font-size: 0.75rem;
-    color: #8fb996;
+    color: #aaaaaa;
     text-transform: uppercase;
     letter-spacing: 1px;
     font-weight: 700;
@@ -206,20 +206,20 @@
     margin: 2px 0 0 0;
     font-weight: 700;
     font-size: 1.2rem;
-    color: #4a5d4e;
+    color: #ffffff;
  }
 
  .activeStat {
-    background: rgba(212, 229, 209, 0.9);
-    border-color: #8fb996;
-    box-shadow: inset 0 0 8px rgba(255,255,255,0.8), 0 0 8px rgba(143, 185, 150, 0.4);
+    background: rgba(255, 255, 255, 0.9);
+    border-color: #ffffff;
+    box-shadow: inset 0 0 8px rgba(0,0,0,0.8), 0 0 8px rgba(255, 255, 255, 0.4);
  }
 
  .activeStat > h4 {
-    color: #2c3e2e;
+    color: #000000;
  }
 
  .activeStat > p {
-    color: #2c3e2e;
+    color: #000000;
  }
 </style>

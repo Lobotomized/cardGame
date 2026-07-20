@@ -55,12 +55,12 @@ const modes:string[] = [
 
 <style>
   dialog {
-    background: #fdfaf6;
-    background-image: var(--paper-texture), linear-gradient(180deg, #fdfaf6 0%, #e8f0e6 100%);
-    border: 4px solid #8fb996;
-    box-shadow: 0 10px 25px rgba(143, 185, 150, 0.3);
+    background: #1a1a1a;
+    background-image: var(--paper-texture), linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%);
+    border: 4px solid #ffffff;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8);
     border-radius: 16px 16px 24px 24px;
-    color: #4a5d4e;
+    color: #ffffff;
     font-family: 'Quicksand', sans-serif;
     z-index: 100;
     position: absolute;
@@ -75,7 +75,7 @@ const modes:string[] = [
   }
   
   dialog::backdrop {
-    background: rgba(44, 62, 46, 0.6);
+    background: rgba(0, 0, 0, 0.8);
     backdrop-filter: blur(3px);
   }
 
@@ -87,19 +87,19 @@ const modes:string[] = [
 
  .enemy-vote {
    font-size: 1.2rem;
-   color: #5c8065;
+   color: #dddddd;
    font-weight: 700;
-   text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.8);
+   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
    margin-bottom: 1rem;
    display: block;
  }
 
  .enemy-voting-text {
-   color: #5c8065;
+   color: #ffffff;
    font-size: 1.8rem;
    text-transform: uppercase;
    letter-spacing: 2px;
-   text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.8);
+   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
    margin: 2rem 0;
  }
 
@@ -107,13 +107,13 @@ const modes:string[] = [
   font-family: 'Quicksand', sans-serif;
   font-weight: 700;
   font-size: 1.1rem;
-  color: #2c3e2e;
+  color: #ffffff;
   padding: 12px 24px;
   border-radius: 8px;
-  background: linear-gradient(180deg, #ffffff 0%, #e8f0e6 100%);
+  background: linear-gradient(180deg, #333333 0%, #111111 100%);
   outline: none;
-  border: 2px solid #8fb996;
-  box-shadow: 0 4px 6px rgba(143, 185, 150, 0.15);
+  border: 2px solid #ffffff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
   cursor: pointer;
   transition: all 0.2s ease-out;
   text-transform: uppercase;
@@ -121,35 +121,35 @@ const modes:string[] = [
  }
 
  button:hover {
-  background: linear-gradient(180deg, #fdfaf6 0%, #d4e5d1 100%);
-  border-color: #5c8065;
-  color: #2c3e2e;
-  box-shadow: 0 4px 10px rgba(143, 185, 150, 0.3);
+  background: linear-gradient(180deg, #555555 0%, #333333 100%);
+  border-color: #cccccc;
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
   transform: translateY(-2px);
  }
  
  .give-up-btn {
    margin-top: 1rem;
-   background: linear-gradient(180deg, #ffe6e6 0%, #ffcccc 100%);
-   border-color: #ff9999;
-   color: #cc3333;
+   background: linear-gradient(180deg, #500000 0%, #300000 100%);
+   border-color: #ff0000;
+   color: #ffcccc;
  }
 
  .give-up-btn:hover {
-   background: linear-gradient(180deg, #ffcccc 0%, #ffb3b3 100%);
-   border-color: #ff6666;
-   box-shadow: 0 4px 10px rgba(255, 102, 102, 0.3);
-   color: #990000;
+   background: linear-gradient(180deg, #700000 0%, #500000 100%);
+   border-color: #ff5555;
+   box-shadow: 0 4px 10px rgba(255, 0, 0, 0.3);
+   color: #ffffff;
  }
 
  .modeName {
-  color: #5c8065;
+  color: #ffffff;
   text-transform: uppercase;
   letter-spacing: 2px;
   font-size: 1.4rem;
   margin-bottom: 15px;
-  text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.8);
-  border-bottom: 2px solid #b5d5b7;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
+  border-bottom: 2px solid #555555;
   padding-bottom: 5px;
   width: 100%;
  }
@@ -158,13 +158,13 @@ const modes:string[] = [
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: rgba(253, 250, 246, 0.8);
+  background: rgba(30, 30, 30, 0.8);
   background-image: var(--paper-texture);
-  border: 2px dashed #8fb996;
+  border: 2px dashed #777777;
   padding: 1.5rem 1rem;
   border-radius: 16px;
   width: 100%;
-  box-shadow: 0 2px 6px rgba(143, 185, 150, 0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
  }
 
  .bets {

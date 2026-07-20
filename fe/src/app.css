@@ -1,16 +1,16 @@
 :root{
-    --card-background: #e8f0e6;
-    --active-stat-color: #8fb996;
-    --letters-color: #2c3e2e;
-    --background: #d4e5d1;
-    --paper-texture: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
+    --card-background: #1a1a1a;
+    --active-stat-color: #333333;
+    --letters-color: #ffffff;
+    --background: #000000;
+    --paper-texture: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.15'/%3E%3C/svg%3E");
 
     font-family: 'Quicksand', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
 }
 
 html, body, #app, main {
     height:100%;
-    background: linear-gradient(135deg, #e6f0e3 0%, #c3d8bf 100%);
-    background-image: var(--paper-texture), linear-gradient(135deg, #e6f0e3 0%, #c3d8bf 100%);
+    background: linear-gradient(135deg, #111111 0%, #000000 100%);
+    background-image: var(--paper-texture), linear-gradient(135deg, #111111 0%, #000000 100%);
     color: var(--letters-color);
 }
