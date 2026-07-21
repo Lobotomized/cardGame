@@ -5,13 +5,13 @@ export let state:stateType;
 
 </script>
 
-<dialog open={state?.me?.score != undefined && state?.me?.score >= 10}>
+<dialog open={state?.me?.score != undefined && state?.me?.score >= 5}>
     <div class="container">
         <h1>Страшен пич! Как ги би ...</h1>
     </div>
 </dialog>
 
-<dialog open={state?.me?.score != undefined && state?.enemyScore >= 10}>
+<dialog open={state?.me?.score != undefined && state?.enemyScore >= 5}>
     <div class="container">
         <h1>Пълен бот! Как те биха...</h1>
     </div>
@@ -58,5 +58,15 @@ h1 {
     text-transform: uppercase;
     letter-spacing: 3px;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+@media (max-width: 600px) {
+    h1 {
+        font-size: 1.8rem;
+    }
+    .container {
+        width: 95vw;
+        padding: 1rem;
+    }
 }
 </style>

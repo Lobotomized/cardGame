@@ -15,13 +15,16 @@
     let video:HTMLVideoElement;
 
     function playVideo() {
-        console.log('here')
-        video.play();
+        if (video) {
+            video.play().catch(() => {});
+        }
     }
 
     function pauseVideo() {
-        video.pause();
-        video.currentTime = 0; // Reset to start on pause
+        if (video) {
+            video.pause();
+            video.currentTime = 0; // Reset to start on pause
+        }
     }
 
 </script>
@@ -32,11 +35,17 @@
         {cardTitle}
     </div>
     <div class="card-image">
-        <video height="130px" bind:this={video} muted preload="auto">
-            {#await import(`./assets/${animation}.mp4`) then { default: anim }}
+        {#await import(`./assets/${animation}.mp4`)}
+            <!-- Loading -->
+        {:then { default: anim }}
+            <video class="card-video" bind:this={video} muted preload="auto">
                 <source src={anim} type="video/mp4">
+            </video>
+        {:catch}
+            {#await import(`./assets/${animation}.jpg`) then { default: img }}
+                <img class="card-video" src={img} alt={cardTitle} />
             {/await}
-        </video>
+        {/await}
     </div>
     <p class="description">
         <b>{descriptionTitle} </b><br/>
@@ -60,19 +69,17 @@
 
 
 <style>
- :root{
-    --umnojitel:5;
- }
-
  .card {
     color: var(--letters-color);
     display: flex;
     flex-direction: column;
     width: calc(45px * var(--umnojitel));
-    height: 400px;
+    min-height: var(--card-height);
+    height: 100%;
     background: #1a1a1a;
     background-image: var(--paper-texture), linear-gradient(to bottom, #1a1a1a, #000000);
     border: 4px solid #ffffff;
+    box-sizing: border-box;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
     cursor: pointer;
     border-radius: 12px 12px 24px 24px;
@@ -123,11 +130,12 @@
     flex-shrink: 0;
  }
 
- video {
-    width: 100%;
-    object-fit: cover;
-    display: block;
- }
+ .card-video {
+   width: 100%;
+   height: calc(var(--card-height) * 0.325);
+   object-fit: cover;
+   display: block;
+}
 
  .description {
     text-align: center;
@@ -143,22 +151,7 @@
     border-bottom: 2px dashed #555555;
     line-height: 1.3;
     color: #dddddd;
-    overflow-y: auto;
- }
-
- /* Custom scrollbar for description */
- .description::-webkit-scrollbar {
-    width: 4px;
- }
- .description::-webkit-scrollbar-track {
-    background: rgba(30, 30, 30, 0.8);
- }
- .description::-webkit-scrollbar-thumb {
-    background: #555555;
-    border-radius: 2px;
- }
- .description::-webkit-scrollbar-thumb:hover {
-    background: #777777;
+    overflow: visible;
  }
 
  .description b {
@@ -221,5 +214,59 @@
 
  .activeStat > p {
     color: #000000;
+ }
+
+ @media (max-width: 900px) {
+    .card-header {
+       font-size: 0.9rem;
+       padding: 4px 2px;
+    }
+    .description {
+       font-size: 0.7rem;
+       padding: 4px 5px;
+    }
+    .description b {
+       font-size: 0.75rem;
+    }
+    .card-stats {
+       padding: 4px 5px;
+       gap: 4px;
+    }
+    .stat > h4 {
+       font-size: 0.6rem;
+    }
+    .stat > p {
+       font-size: 0.9rem;
+    }
+ }
+
+ @media (max-width: 600px) {
+    .card-header {
+       font-size: 0.7rem;
+       padding: 2px 1px;
+    }
+    .description {
+       font-size: 0.55rem;
+       padding: 2px 3px;
+       line-height: 1.1;
+    }
+    .description b {
+       font-size: 0.6rem;
+       margin-bottom: 2px;
+    }
+    .card-stats {
+       padding: 2px 3px;
+       gap: 2px;
+    }
+    .stat {
+       padding: 2px 0;
+       border-radius: 6px;
+    }
+    .stat > h4 {
+       font-size: 0.5rem;
+    }
+    .stat > p {
+       font-size: 0.7rem;
+    }
  }
 </style>

@@ -1,1 +1,1 @@
-export type modeType = "betting" | "intelligence" | "agility" |"strength"
+export type modeType = "readyCheck" | "betting" | "intelligence" | "agility" |"strength"

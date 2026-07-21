@@ -98,15 +98,15 @@
         align-items: center;
         justify-content: center;
         gap: 40px;
-        min-height: 400px;
+        min-height: var(--card-height);
         z-index: 5;
     }
 
     .card-container {
         display: flex;
         justify-content: center;
-        min-height: 400px;
-        min-width: 225px;
+        min-height: var(--card-height);
+        min-width: calc(45px * var(--umnojitel));
         transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
         z-index: 10;
     }
@@ -183,8 +183,8 @@
     }
 
     .deck-card {
-        width: 150px;
-        height: 220px;
+        width: calc(30px * var(--umnojitel));
+        height: calc(var(--card-height) * 0.55);
         background: linear-gradient(135deg, #333333 0%, #111111 100%);
         background-image: var(--paper-texture), linear-gradient(135deg, #333333 0%, #111111 100%);
         border: 4px solid #555555;
@@ -221,17 +221,50 @@
     }
 
     .deck-count {
-        font-size: 3.5rem;
+        font-size: calc(0.7rem * var(--umnojitel));
         font-weight: 800;
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
         z-index: 2;
     }
 
     .deck-label {
-        font-size: 1rem;
+        font-size: calc(0.2rem * var(--umnojitel));
         font-weight: 700;
         letter-spacing: 2px;
         text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
         z-index: 2;
+    }
+
+    @media (max-width: 900px) {
+        .board {
+            gap: 10px;
+        }
+        .center-area {
+            gap: 10px;
+        }
+        .me-container.clash {
+            transform: translateX(30px) scale(1.05) rotate(5deg);
+        }
+        .enemy-container.clash {
+            transform: translateX(-30px) scale(1.05) rotate(-5deg);
+        }
+        .me-container.winner {
+            transform: translateX(15px) scale(1.1);
+        }
+        .enemy-container.winner {
+            transform: translateX(-15px) scale(1.1);
+        }
+        .me-container.loser {
+            transform: translateX(30px) scale(0.6) translateY(20px) rotate(-15deg);
+        }
+        .enemy-container.loser {
+            transform: translateX(-30px) scale(0.6) translateY(20px) rotate(15deg);
+        }
+        .me-container.tie {
+            transform: translateX(15px) scale(0.8);
+        }
+        .enemy-container.tie {
+            transform: translateX(-15px) scale(0.8);
+        }
     }
 </style>

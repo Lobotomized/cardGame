@@ -5,7 +5,30 @@
     --background: #000000;
     --paper-texture: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.15'/%3E%3C/svg%3E");
 
+    --umnojitel: 5;
+    --card-height: 400px;
     font-family: 'Quicksand', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+}
+
+@media (max-width: 1200px) {
+    :root {
+        --umnojitel: 4;
+        --card-height: 320px;
+    }
+}
+
+@media (max-width: 900px) {
+    :root {
+        --umnojitel: 3.2;
+        --card-height: 260px;
+    }
+}
+
+@media (max-width: 600px) {
+    :root {
+        --umnojitel: 2.2;
+        --card-height: 180px;
+    }
 }
 
 html, body, #app, main {

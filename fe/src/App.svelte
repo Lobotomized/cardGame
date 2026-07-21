@@ -1,24 +1,63 @@
 <script lang="ts">
   import io  from 'socket.io-client';
   import Hand from './Hand.svelte';
-  import Vote from './Vote.svelte'
-  import Board from './Board.svelte'
-    import type { stateType } from './types/State';
-    import Endscreen from './Endscreen.svelte';
+  import Vote from './Vote.svelte';
+  import Board from './Board.svelte';
+  import BattleHistoryModal from './BattleHistoryModal.svelte';
+  import type { stateType } from './types/State';
+  import Endscreen from './Endscreen.svelte';
+  import ReadyCheck from './ReadyCheck.svelte';
 
-  let socket = io();
+  let socket: any = null;
   let state:stateType | null  = null;
   let isAnimating = false;
+  let showHistory = false;
+  let searching = false;
+  let searchMessage = "Finding opponent...";
 
-  socket.on('returnState', (innerState:stateType) => {
-      state = innerState;
-  }) // Return State
+  function findOpponent() {
+      searching = true;
+      socket = io();
+      socket.on('returnState', (innerState: any) => {
+          if (innerState.message) {
+              searchMessage = innerState.message === "Not Enough Players to Start" 
+                ? "Waiting for another player..." 
+                : innerState.message;
+              state = null;
+          } else {
+              state = innerState;
+              searching = false;
+          }
+      }) // Return State
+  }
 
 </script>
 
 <main>
+  {#if !state && !searching}
+    <div class="start-menu">
+      <div class="menu-content">
+        <h1 class="game-title">✿ Card Game ✿</h1>
+        <button class="find-btn" on:click={findOpponent}>
+          Find an Opponent
+        </button>
+      </div>
+    </div>
+  {/if}
+
+  {#if !state && searching}
+    <div class="start-menu">
+      <div class="menu-content">
+        <h1 class="game-title">✿ Searching ✿</h1>
+        <p class="search-message">{searchMessage}</p>
+        <div class="spinner"></div>
+      </div>
+    </div>
+  {/if}
+
   {#if state}
   <Vote socket={socket} state={state}></Vote>
+  <ReadyCheck socket={socket} state={state}></ReadyCheck>
   {/if}
   {#if state}
   <Endscreen state={state}></Endscreen>
@@ -62,6 +101,10 @@
           <div class="helper-title">HELPER</div>
           <p>The special of the first played card executes first.</p>
         </div>
+
+        <button class="history-btn" on:click={() => showHistory = true}>
+          Battle History
+        </button>
       </div>
       
       {#if state.enemyHandSize !== undefined}
@@ -82,12 +125,21 @@
       
       {#if state.me && state.me.hand}
         <div class="hand">
-          <Hand socket={socket} mode={state.mode} cards={state.me.hand} isAnimating={isAnimating}></Hand>
+          <Hand socket={socket} mode={state.mode} cards={state.me.hand} isAnimating={isAnimating} isMyTurn={state.meRef === state.turn}></Hand>
         </div>
       {/if}
 
   </div>
 
+  {#if showHistory && state.battleHistory}
+    <BattleHistoryModal 
+      history={state.battleHistory} 
+      meRef={state.meRef} 
+      mode={state.mode}
+      state={state}
+      close={() => showHistory = false} 
+    />
+  {/if}
 
   {/if}
 </main>
@@ -95,6 +147,88 @@
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap');
+
+  .start-menu {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #fdfaf6, #e6e0d4);
+    background-image: var(--paper-texture), linear-gradient(135deg, #fdfaf6, #e6e0d4);
+  }
+
+  .menu-content {
+    background: rgba(255, 255, 255, 0.85);
+    padding: 3rem 4rem;
+    border-radius: 24px;
+    border: 3px dashed #8fb996;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .game-title {
+    font-family: 'Quicksand', sans-serif;
+    color: #2c3e2e;
+    font-size: 3rem;
+    font-weight: 700;
+    margin: 0;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+  }
+
+  .find-btn {
+    padding: 15px 30px;
+    font-size: 1.5rem;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    color: #ffffff;
+    background: #8fb996;
+    background-image: var(--paper-texture), linear-gradient(135deg, #8fb996, #5c7e63);
+    border: 2px dashed #ffffff;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+  .find-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+    background-image: var(--paper-texture), linear-gradient(135deg, #9cc8a4, #6a8c71);
+  }
+
+  .find-btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  }
+
+  .search-message {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1.2rem;
+    color: #2c3e2e;
+    margin: 0;
+    font-weight: 600;
+  }
+
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #d4e5d1;
+    border-top: 4px solid #8fb996;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
 
   .hand{
     grid-area: hand;
@@ -112,11 +246,19 @@
     gap:8px;
     overflow-x:auto;
     justify-content: center;
+    padding: 0 10px;
+    box-sizing: border-box;
+  }
+
+  @media (max-width: 900px) {
+    .cards {
+      justify-content: flex-start;
+    }
   }
 
   .card-back {
-    width: 225px; /* 45px * 5 */
-    height: 400px;
+    width: calc(45px * var(--umnojitel)); /* 45px * 5 */
+    height: var(--card-height);
     background: linear-gradient(135deg, #333333 0%, #111111 100%);
     background-image: var(--paper-texture), linear-gradient(135deg, #333333 0%, #111111 100%);
     border: 4px solid #555555;
@@ -142,7 +284,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 4rem;
+    font-size: calc(0.8rem * var(--umnojitel));
     color: #ffffff;
     opacity: 0.8;
     filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.5));
@@ -280,6 +422,35 @@
     letter-spacing: 1px;
   }
 
+  .history-btn {
+    margin-top: 10px;
+    padding: 12px;
+    background: #8fb996;
+    background-image: var(--paper-texture), linear-gradient(135deg, #8fb996, #5c7e63);
+    border: 2px dashed #ffffff;
+    border-radius: 8px;
+    color: #ffffff;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  }
+
+  .history-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+    background-image: var(--paper-texture), linear-gradient(135deg, #9cc8a4, #6a8c71);
+  }
+
+  .history-btn:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+
   main{
     height:100%;
     width:100%;
@@ -298,18 +469,59 @@
 
   }
 
-@media only screen and (max-width: 750px) {
+@media only screen and (max-width: 900px) {
   .all {
-    height:100%;
-    width:100%;
-    display:flex;
-    flex-direction:column;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow-y: auto;
   }
-  .scoreBoard{
-    display:none;
-    /* grid-area: scoreBoard;
-      display:flex;
-      flex-direction: row; */
-    }
+  .scoreBoard {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    border-left: none;
+    border-bottom: 3px solid #555555;
+    padding: 10px;
+    gap: 10px;
+    order: -1;
+  }
+  .score-section, .turn-indicator, .helper-box, .history-btn {
+    flex: 1 1 200px;
+    font-size: 0.9rem;
+    padding: 0.5rem;
+    margin-bottom: 0;
+  }
+  .turn-indicator {
+    font-size: 1.2rem;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .section-title {
+    font-size: 1rem;
+    margin-bottom: 0.4rem;
+  }
+  .stat-row {
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+  }
+  .stat-value {
+    font-size: 1rem;
+  }
+  .helper-box {
+    display: none;
+  }
+  .board {
+    flex: 1;
+    min-height: 250px;
+  }
+  .hand {
+    padding-bottom: 10px;
+  }
+  .enemyHand {
+    display: none;
+  }
 }
 </style>

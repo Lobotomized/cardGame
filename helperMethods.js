@@ -1,6 +1,6 @@
 const cardsObj = require('./cards.js')
 
-const bettingSteps  = [0,1,3,5,8,10]
+const bettingSteps  = [0,1,2,3,4,5]
 
 const specials = {
     none:function(meRef,enemyRef,state){},
@@ -39,6 +39,22 @@ const specials = {
             enemyFirstCard.strength = 1;
         }
     },
+    poison:function(meRef,enemyRef,state){
+        const enemyLastCard = state[enemyRef].hand[state[enemyRef].hand.length-1]
+        if(enemyLastCard){
+            enemyLastCard.agility = 1;
+            enemyLastCard.intelligence = 1;
+            enemyLastCard.strength = 1;
+        }
+    },
+    eatYourChildren:function(meRef,enemyRef,state){
+        const myFirstCard = state[meRef].hand[0]
+        if(myFirstCard){
+            myFirstCard.agility = 1;
+            myFirstCard.intelligence = 1;
+            myFirstCard.strength = 1;
+        }
+    },
     antiMage:function(meRef,enemyRef,state){
         const card = state.board[meRef];
         const enemyCard = state.board[enemyRef]
@@ -58,6 +74,20 @@ const specials = {
         state[meRef].hand.forEach((card)  => {
             card[state.mode]+=1;
         })
+    },
+    squash:function(meRef,enemyRef,state){
+        const card = state.board[meRef];
+        const enemyCard = state.board[enemyRef]
+        if(card.strength > enemyCard.strength){
+            enemyCard.strength = 0;
+            enemyCard.agility = 0;
+            enemyCard.intelligence = 0;
+        }
+    },
+    payForSins:function(meRef,enemyRef,state){
+        const takenCount = parseInt(state[enemyRef].taken.length/2)
+        const card = state.board[meRef];
+        card[state.mode]+= takenCount;
     },
     warCry: function(meRef,enemyRef,state){
         const card = state.board[meRef];
@@ -80,7 +110,7 @@ const specials = {
 }
 
 module.exports = {
-    cleanBoard:function(board, winner){
+    cleanBoard:function(board, winner, state){
         if(!winner){
             return;
         }
@@ -88,8 +118,12 @@ module.exports = {
         board.lastTrick = {
             player1: board.player1,
             player2: board.player2,
-            winnerCard: board.winnerCard
+            winnerCard: board.winnerCard,
+            winnerRef: state ? state.lastBattleWinner : null
         };
+        if(state && state.battleHistory) {
+            state.battleHistory.push(board.lastTrick);
+        }
         board.player1 = null;
         board.player2 = null;
         board.winnerCard = null;
@@ -211,6 +245,16 @@ module.exports = {
             state.player2.score += playerTwoKoeficient
             state.turn = "player2"
         }
+        else {
+            // Tie in taken cards. The one who won the betting stage loses.
+            if (state.koeficient.better === 'player1') {
+                state.player2.score += playerTwoKoeficient;
+                state.turn = "player2";
+            } else if (state.koeficient.better === 'player2') {
+                state.player1.score += playerOneKoeficient;
+                state.turn = "player1";
+            }
+        }
         // Reset game state
         resetGameState(state);
         console.log("state after reset  : ", state)
@@ -226,7 +270,11 @@ module.exports = {
 
 function resetGameState(state) {
     // Reset board
-    state.board.publicDeck = JSON.parse(JSON.stringify(Object.values(cardsObj)));
+    if (state.bigGameCards) {
+        state.board.publicDeck = JSON.parse(JSON.stringify(state.bigGameCards));
+    } else {
+        state.board.publicDeck = JSON.parse(JSON.stringify(Object.values(cardsObj)));
+    }
     state.board.player1 = null;
     state.board.player2 = null;
     state.board.winnerCard = null;
@@ -236,6 +284,7 @@ function resetGameState(state) {
     state.player1.taken = [];
     state.player2.taken = [];
     state.tie.taken = [];
+    state.battleHistory = [];
 
     // Reset game mode and betting state
     state.mode = 'betting';

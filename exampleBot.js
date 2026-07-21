@@ -22,9 +22,9 @@ priority:Number,
 }
 
 Move while betting - {
- Mode: Strength, Agility, Intelligence,
- Bet: 1|3|5|8|10
-}
+  Mode: Strength, Agility, Intelligence,
+  Bet: 1|2|3|4|5
+ }
  Move while playing - {
  cardIndex:number
  }
@@ -63,6 +63,17 @@ const genericSpecial = 'genericSpecial'
 const cards = Object.values(cardsObj)
 
 const moveFunction = function (player, move, state) {
+    if (state.mode === 'readyCheck') {
+        if (move.ready) {
+            state[player.ref].ready = true;
+            if (state.player1.ready && state.player2.ready) {
+                state.mode = 'betting';
+                state.turn = 'player1';
+            }
+        }
+        return;
+    }
+
     // Check if it's the player's turn
     if (!checkIfMyTurn(player.ref, state.turn)) {
         return;
@@ -90,7 +101,7 @@ const handleBettingPhase = function (player, move, state) {
     }
 
     if (move.mode || move.giveUp) {
-        state.turn = state.koeficient.value < 10 ? oppositePlayer(player.ref) : player.ref;
+        state.turn = state.koeficient.value < 5 ? oppositePlayer(player.ref) : player.ref;
     }
 };
 
@@ -148,10 +159,11 @@ newG({
             lastTrick: null,
             publicDeck: cards
         },
+        battleHistory: [],
         turn: 'player1',
         mode:'betting',
         lastBattleWinner: null,
-        tempMode:null,
+        tempMode:null,  
         koeficient:null, //{value:1,better:'player1'},
         roundEndTimer: null,
     },
@@ -159,6 +171,20 @@ newG({
     minPlayers: 2,
     maxPlayers: 2, // Number of Players you want in a single game
     timeFunction: function (state) {
+        if (!state.bigGameCards) {
+            const shuffled = [...cards].sort(() => Math.random() - 0.5);
+            state.bigGameCards = shuffled.slice(0, 16);
+            state.board.publicDeck = JSON.parse(JSON.stringify(state.bigGameCards));
+            state.mode = 'readyCheck';
+            state.player1.ready = false;
+            state.player2.ready = false;
+            return;
+        }
+
+        if(state.mode === 'readyCheck'){
+            return;
+        }
+
         if(state.mode === 'betting'){
             if(state.player1.hand.length === 0){
                 giveStartingCards(state)
@@ -168,7 +194,7 @@ newG({
 
         if(state.board.player1 && state.board.player2){
             //Prepare for next turn
-            cleanBoard(state.board, state[state.lastBattleWinner])
+            cleanBoard(state.board, state[state.lastBattleWinner], state)
         }
         
         if(isRoundFinished(state.player1.hand, state.player2.hand)){
@@ -193,6 +219,7 @@ newG({
         toReturn.enemyScore = state[oppositePlayer(playerRef)].score
         toReturn.enemyTaken = state[oppositePlayer(playerRef)].taken.length
         toReturn.enemyHandSize = state[oppositePlayer(playerRef)].hand.length
+        toReturn.enemyReady = state[oppositePlayer(playerRef)].ready
         return toReturn;
     },
     // connectFunction: function (state, playerRef) {

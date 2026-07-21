@@ -15,11 +15,14 @@ export type stateType = {
         value:number,
         better:turn
     },
+    battleHistory: BattleHistoryTrick[],
     meRef:turn,
     enemyScore:number,
     enemyTaken:number,
-    enemyHandSize:number
-    
+    enemyHandSize:number,
+    enemyReady?:boolean,
+    message?:string,
+    bigGameCards?:CardType[]
 }
 
 export type turn = 'player1' | 'player2' | null
@@ -27,7 +30,8 @@ export type turn = 'player1' | 'player2' | null
 export type player = {
     hand:CardType[],
     taken:CardType[],
-    score:number
+    score:number,
+    ready?:boolean
 }
 
 export type Board = {
@@ -37,7 +41,15 @@ export type Board = {
     lastTrick?: {
         player1:CardType,
         player2:CardType,
-        winnerCard:CardType
+        winnerCard:CardType,
+        winnerRef?: turn | 'tie'
     },
     publicDeck:CardType[]
+}
+
+export type BattleHistoryTrick = {
+    player1: CardType,
+    player2: CardType,
+    winnerCard: CardType,
+    winnerRef?: turn | 'tie'
 }

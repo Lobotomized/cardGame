@@ -8,7 +8,7 @@ $:myTurn = state.turn === state.meRef;
 $:isMyTurn = myTurn ? "Your turn" : "Enemies turn";
 
 
-const bettingSteps  = [0,1,3,5,8,10]
+const bettingSteps  = [0,1,2,3,4,5]
 const modes:string[] = [
   'Intelligence',
   'Agility',
@@ -19,7 +19,7 @@ const modes:string[] = [
 <dialog open={state.mode === 'betting'}>
     <div class="container">
         {#if myTurn}
-        {#if !state?.koeficient?.value || state.koeficient.value < 10}
+        {#if !state?.koeficient?.value || state.koeficient.value < 5}
           {#if state?.koeficient}
           <span class="enemy-vote">Enemy voted for {state.tempMode} with coefficient {bettingSteps[state.currentBettingStep-1]} to 1 </span>
           {/if}
@@ -70,8 +70,10 @@ const modes:string[] = [
     bottom: 0;
     margin: auto;
     padding: 2rem;
+    width: 90vw;
     max-width: 500px;
     text-align: center;
+    box-sizing: border-box;
   }
   
   dialog::backdrop {
@@ -174,9 +176,29 @@ const modes:string[] = [
   gap: 1.5rem;
   margin-bottom: 15px;
   margin-top: 10px;
+  flex-wrap: wrap;
  }
 
  h3 {
    margin: 0;
+ }
+
+ @media (max-width: 600px) {
+   dialog {
+     padding: 1rem;
+   }
+   .bets {
+     gap: 0.8rem;
+   }
+   .modeBet {
+     padding: 1rem 0.5rem;
+   }
+   button {
+     padding: 8px 12px;
+     font-size: 0.9rem;
+   }
+   .enemy-voting-text {
+     font-size: 1.3rem;
+   }
  }
 </style>

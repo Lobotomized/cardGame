@@ -1,4 +1,5 @@
 /*
+    negative special - 28
     without special - 23
     with special - 18
     with strong special - 16
@@ -14,6 +15,16 @@ module.exports = {
         strength:13,
         descriptionTitle:"No special",
         description:""
+    },
+    saturn: {
+        cardTitle:"Saturn",
+        special:"eatYourChildren",
+        animation:"saturn",
+        agility:2,
+        intelligence:13,
+        strength:13,
+        descriptionTitle:"Eat your children",
+        description:"Make the first card in your own hand 1/1/1"
     },
     forestDragon : {
         cardTitle:"Forest Dragon",
@@ -58,6 +69,16 @@ module.exports = {
         agility:8,
         descriptionTitle:"Intelligence Trap",
         description:"If you have less intelligence than the enemy, the enemy loses all stats."
+    },
+    theThing: {
+        cardTitle:"The Thing",
+        special:"squash",
+        animation:"theThing",
+        intelligence:2,
+        strength:6,
+        agility:10,
+        descriptionTitle:"Squash",
+        description:"If you have more strength than the enemy, the enemy loses all stats."
     },
     windElemental: {
         cardTitle:"Wind Elemental",
@@ -111,6 +132,16 @@ module.exports = {
         description:"The first card in the enmeies hand becomes 1/1/1",
         descriptionTitle:"Curse"
     },
+    oldWitcher: {
+        cardTitle:"Witcher",
+        special:"none",
+        animation:"oldMen",
+        description:"The left most card of the enemy hand becomes 1/1/1",
+        descriptionTitle:"Poison",
+        intelligence:10,
+        strength:7,
+        agility:1
+    },
     genie: {
         cardTitle:"Genie",
         special:"wish",
@@ -160,8 +191,18 @@ module.exports = {
         strength:6,
         agility:6,
         special:"hell",
-        description:"+1 to mode stat for half of the taken cards",
+        description:"+1 to mode stat for half of the cards you have taken",
         descriptionTitle:"Hell", 
+    },
+    hell: {
+        cardTitle:"Hell",
+        intelligence:6,
+        animation:"hell",
+        strength:6,
+        agility:6,
+        special:"payForSins",
+        description:"+1 to mode stat for half of the taken cards your enemy has taken",
+        descriptionTitle:"Pay for your sins", 
     },
     swissArmyKnife: {
         cardTitle:"Swiss army knife",
@@ -172,5 +213,7 @@ module.exports = {
         intelligence:8,
         strength:8,
         agility:7
-    }
+    },
+
+
 }
