@@ -2,7 +2,7 @@
     negative special - 28
     without special - 23
     with special - 18
-    with strong special - 16
+    with strong special - 14
 */
 module.exports = {
     //Strength chars
@@ -16,16 +16,17 @@ module.exports = {
         descriptionTitle:"No special",
         description:""
     },
-    saturn: {
-        cardTitle:"Saturn",
-        special:"eatYourChildren",
-        animation:"saturn",
+    leviathan: {
+        cardTitle:"Leviathan",
+        special:"fear",
+        animation:"leviathan",
         agility:2,
-        intelligence:13,
-        strength:13,
-        descriptionTitle:"Eat your children",
-        description:"Make the first card in your own hand 1/1/1"
+        intelligence:2,
+        strength:12,
+        descriptionTitle:"Fear",
+        description:"All cards enemy cards lose 1 from the game mode stat"
     },
+
     forestDragon : {
         cardTitle:"Forest Dragon",
         special:"entangle",
@@ -134,9 +135,9 @@ module.exports = {
     },
     oldWitcher: {
         cardTitle:"Witcher",
-        special:"none",
+        special:"poison",
         animation:"oldMen",
-        description:"The left most card of the enemy hand becomes 1/1/1",
+        description:"The right most card of the enemy hand becomes 1/1/1",
         descriptionTitle:"Poison",
         intelligence:10,
         strength:7,
@@ -216,4 +217,37 @@ module.exports = {
     },
 
 
+    //1 lacking
+    saturn: {
+        cardTitle:"Saturn",
+        special:"eatYourChildren",
+        animation:"saturn",
+        agility:2,
+        intelligence:13,
+        strength:13,
+        descriptionTitle:"Eat your children",
+        description:"Make the first card in your own hand 1/1/1"
+    },
+
+    angel: {
+        cardTitle:"Angel",
+        special:"blessing",
+        animation:"angel",
+        agility:8,
+        intelligence:8,
+        strength:2,
+        descriptionTitle:"Blessing",
+        description:"The first card in your hand gets +2 to all stats"
+    },
+
+    snakes: {
+        cardTitle:"Snakes",
+        special:"none",
+        animation:"snakes",
+        agility:11,
+        intelligence:11,
+        strength:1,
+        descriptionTitle:"No special",
+        description:""
+    },
 }

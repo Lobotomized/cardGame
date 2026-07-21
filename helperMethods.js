@@ -39,6 +39,19 @@ const specials = {
             enemyFirstCard.strength = 1;
         }
     },
+    fear:function(meRef,enemyRef,state){
+        state[enemyRef].hand.forEach((card)  => {
+            card[state.mode]-=1;
+        })
+    },
+    blessing:function(meRef,enemyRef,state){
+        const myFirstCard = state[meRef].hand[0]
+        if(myFirstCard){
+            myFirstCard.agility+=2;
+            myFirstCard.intelligence+=2;
+            myFirstCard.strength+=2;
+        }
+    },
     poison:function(meRef,enemyRef,state){
         const enemyLastCard = state[enemyRef].hand[state[enemyRef].hand.length-1]
         if(enemyLastCard){

@@ -233,12 +233,232 @@ io,
 false,
 {
     joinBotFunction: function (game, minPlayers, maxPlayers) {
-        if (game.players.length < 3 && game.players.length > 1) {
-            // game.joinBot('tralala')
+        if (game.players.length === 1) {
+            if (!game.createdTime) {
+                game.createdTime = Date.now();
+            }
+            if (Date.now() - game.createdTime > 30000) {
+                game.joinBot(Math.random().toString().substr(2, 6));
+                game.createdTime = null; // reset to avoid multiple bots
+            }
+        } else {
+            game.createdTime = null;
         }
     },
     botAIFunction: function (game, bot) {
-        game.move(bot.socketId, '')
+        if (bot.lastMoveTime && Date.now() - bot.lastMoveTime < 1500) {
+            return;
+        }
+
+        const state = game.returnState(bot.socketId);
+        if (!state || state.message) return; // Blocker message
+
+        if (state.mode === 'readyCheck') {
+            if (state.me && !state.me.ready) {
+                bot.lastMoveTime = Date.now();
+                game.move(bot.socketId, { ready: true });
+            }
+            return;
+        }
+
+        if (state.meRef !== state.turn) {
+            return;
+        }
+
+        bot.lastMoveTime = Date.now();
+
+        if (state.mode === 'betting') {
+            let str = 0, agi = 0, int = 0;
+            if (state.me && state.me.hand && state.me.hand.length > 0) {
+                state.me.hand.forEach(c => {
+                    str += c.strength;
+                    agi += c.agility;
+                    int += c.intelligence;
+                });
+                const best = Math.max(str, agi, int);
+                let selectedMode = 'strength';
+                if (best === agi) selectedMode = 'agility';
+                if (best === int) selectedMode = 'intelligence';
+
+                // If the player just bet on the same mode we want, we MUST give up instead of betting the exact same thing
+                if (state.tempMode === selectedMode) {
+                    game.move(bot.socketId, { giveUp: true });
+                } else if (state.tempMode && state.currentBettingStep > 3) {
+                    game.move(bot.socketId, { giveUp: true });
+                } else {
+                    game.move(bot.socketId, { mode: selectedMode });
+                }
+            } else {
+                game.move(bot.socketId, { giveUp: true });
+            }
+            return;
+        }
+
+        // Playing phase
+        if (state.me && state.me.hand && state.me.hand.length > 0) {
+            let bestIndex = 0;
+            
+            const enemyRef = state.meRef === 'player1' ? 'player2' : 'player1';
+            const enemyCard = state.board && state.board[enemyRef];
+            
+            if (enemyCard) {
+                // GOING SECOND
+                let winIndex = -1;
+                let winModeVal = Infinity;
+                let winTotalStats = Infinity;
+
+                let tieIndex = -1;
+                let tieTotalStats = Infinity;
+
+                let loseIndex = -1;
+                let loseModeVal = Infinity;
+                let loseTotalStats = Infinity;
+
+                state.me.hand.forEach((card, index) => {
+                    const testState = JSON.parse(JSON.stringify(state));
+                    const myRef = testState.meRef;
+                    
+                    testState[enemyRef] = {
+                        hand: new Array(testState.enemyHandSize || 0).fill(null),
+                        taken: new Array(testState.enemyTaken || 0).fill(null)
+                    };
+                    testState[myRef] = testState.me;
+
+                    testState.board[myRef] = testState.me.hand[index];
+                    testState.me.hand.splice(index, 1);
+
+                    try { special(enemyRef, myRef, testState); } catch(e) {}
+                    try { special(myRef, enemyRef, testState); } catch(e) {}
+
+                    let winner = 'tie';
+                    try { winner = battle(testState); } catch(e) {}
+
+                    let origModeVal = card[state.mode];
+                    let origTotalStats = card.strength + card.agility + card.intelligence;
+
+                    if (winner === myRef) {
+                        if (origModeVal < winModeVal || (origModeVal === winModeVal && origTotalStats < winTotalStats)) {
+                            winModeVal = origModeVal;
+                            winTotalStats = origTotalStats;
+                            winIndex = index;
+                        }
+                    } else if (winner === 'tie') {
+                        if (origTotalStats < tieTotalStats) {
+                            tieTotalStats = origTotalStats;
+                            tieIndex = index;
+                        }
+                    } else {
+                        if (origModeVal < loseModeVal || (origModeVal === loseModeVal && origTotalStats < loseTotalStats)) {
+                            loseModeVal = origModeVal;
+                            loseTotalStats = origTotalStats;
+                            loseIndex = index;
+                        }
+                    }
+                });
+
+                if (winIndex !== -1) {
+                    bestIndex = winIndex;
+                } else if (tieIndex !== -1) {
+                    bestIndex = tieIndex;
+                } else {
+                    bestIndex = loseIndex;
+                }
+            } else {
+                // GOING FIRST
+                let bestModeVal = -1;
+                let bestTotalStats = Infinity;
+                let bestIdx = 0;
+
+                let worstModeVal = Infinity;
+                let worstTotalStats = Infinity;
+                let worstIdx = 0;
+
+                let guaranteedWinIndex = -1;
+                let guaranteedWinModeVal = Infinity;
+
+                let unseenCards = [];
+                if (state.bigGameCards) {
+                    const knownCardTitles = new Set();
+                    state.me.hand.forEach(c => knownCardTitles.add(c.cardTitle));
+                    if (state.battleHistory) {
+                        state.battleHistory.forEach(trick => {
+                            if (trick.player1) knownCardTitles.add(trick.player1.cardTitle);
+                            if (trick.player2) knownCardTitles.add(trick.player2.cardTitle);
+                        });
+                    }
+                    
+                    state.bigGameCards.forEach(c => {
+                        if (!knownCardTitles.has(c.cardTitle)) {
+                            unseenCards.push(c);
+                        }
+                    });
+                }
+
+                state.me.hand.forEach((card, index) => {
+                    let origModeVal = card[state.mode];
+                    let origTotalStats = card.strength + card.agility + card.intelligence;
+
+                    if (origModeVal > bestModeVal || (origModeVal === bestModeVal && origTotalStats < bestTotalStats)) {
+                        bestModeVal = origModeVal;
+                        bestTotalStats = origTotalStats;
+                        bestIdx = index;
+                    }
+
+                    if (origModeVal < worstModeVal || (origModeVal === worstModeVal && origTotalStats < worstTotalStats)) {
+                        worstModeVal = origModeVal;
+                        worstTotalStats = origTotalStats;
+                        worstIdx = index;
+                    }
+
+                    let guaranteesWin = true;
+                    if (unseenCards.length > 0) {
+                        for (let unseen of unseenCards) {
+                            const testState = JSON.parse(JSON.stringify(state));
+                            const myRef = testState.meRef;
+                            
+                            testState[enemyRef] = {
+                                hand: new Array(testState.enemyHandSize || 0).fill(null),
+                                taken: new Array(testState.enemyTaken || 0).fill(null)
+                            };
+                            testState[myRef] = testState.me;
+
+                            testState.board[myRef] = testState.me.hand[index];
+                            testState.me.hand.splice(index, 1);
+                            
+                            testState.board[enemyRef] = JSON.parse(JSON.stringify(unseen));
+
+                            try { special(myRef, enemyRef, testState); } catch(e) {}
+                            try { special(enemyRef, myRef, testState); } catch(e) {}
+
+                            let winner = 'tie';
+                            try { winner = battle(testState); } catch(e) {}
+
+                            if (winner !== myRef) {
+                                guaranteesWin = false;
+                                break;
+                            }
+                        }
+                    } else {
+                        guaranteesWin = false;
+                    }
+
+                    if (guaranteesWin) {
+                        if (origModeVal < guaranteedWinModeVal) {
+                            guaranteedWinModeVal = origModeVal;
+                            guaranteedWinIndex = index;
+                        }
+                    }
+                });
+                
+                if (guaranteedWinIndex !== -1) {
+                    bestIndex = guaranteedWinIndex;
+                } else {
+                    bestIndex = worstIdx;
+                }
+            }
+
+            game.move(bot.socketId, { cardIndex: bestIndex });
+        }
     }
 })
 
