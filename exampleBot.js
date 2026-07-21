@@ -10,8 +10,6 @@ const cardsObj = require('./cards.js')
 app.use('/static', express.static('public'))
 app.use('/assets', express.static('fe/dist/assets'))
 
-const ANIMATE_COUNTER = 50;
-const ANIMATE_SPECIAL_COUNTER = 15;
 
 /*
 Effect - {
