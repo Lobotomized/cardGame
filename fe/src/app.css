@@ -1,3 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
 :root{
     --card-background: #1a1a1a;
     --active-stat-color: #333333;
@@ -32,7 +36,11 @@
 }
 
 html, body, #app, main {
-    height:100%;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
     background: linear-gradient(135deg, #111111 0%, #000000 100%);
     background-image: var(--paper-texture), linear-gradient(135deg, #111111 0%, #000000 100%);
     color: var(--letters-color);

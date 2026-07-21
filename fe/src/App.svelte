@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
   import io  from 'socket.io-client';
   import Hand from './Hand.svelte';
   import Vote from './Vote.svelte';
@@ -12,7 +13,7 @@
   let state:stateType | null  = null;
   let isAnimating = false;
   let showHistory = false;
-  let searching = false;
+  let searching = true;
   let searchMessage = "Finding opponent...";
 
   function findOpponent() {
@@ -31,20 +32,12 @@
       }) // Return State
   }
 
+  onMount(() => {
+    findOpponent();
+  });
 </script>
 
 <main>
-  {#if !state && !searching}
-    <div class="start-menu">
-      <div class="menu-content">
-        <h1 class="game-title">✿ Card Game ✿</h1>
-        <button class="find-btn" on:click={findOpponent}>
-          Find an Opponent
-        </button>
-      </div>
-    </div>
-  {/if}
-
   {#if !state && searching}
     <div class="start-menu">
       <div class="menu-content">
@@ -178,34 +171,6 @@
     font-weight: 700;
     margin: 0;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
-  }
-
-  .find-btn {
-    padding: 15px 30px;
-    font-size: 1.5rem;
-    font-family: 'Quicksand', sans-serif;
-    font-weight: 700;
-    color: #ffffff;
-    background: #8fb996;
-    background-image: var(--paper-texture), linear-gradient(135deg, #8fb996, #5c7e63);
-    border: 2px dashed #ffffff;
-    border-radius: 12px;
-    cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    transition: all 0.2s ease;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-  }
-
-  .find-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 15px rgba(0,0,0,0.3);
-    background-image: var(--paper-texture), linear-gradient(135deg, #9cc8a4, #6a8c71);
-  }
-
-  .find-btn:active {
-    transform: translateY(1px);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
   }
 
   .search-message {
@@ -473,7 +438,7 @@
   .all {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    height: 100%;
     overflow-y: auto;
   }
   .scoreBoard {
