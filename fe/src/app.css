@@ -14,21 +14,21 @@
     font-family: 'Quicksand', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1200px), (max-height: 1000px) {
     :root {
         --umnojitel: 4;
         --card-height: 320px;
     }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 900px), (max-height: 800px) {
     :root {
         --umnojitel: 3.2;
         --card-height: 260px;
     }
 }
 
-@media (max-width: 600px) {
+@media (max-width: 600px), (max-height: 650px) {
     :root {
         --umnojitel: 2.2;
         --card-height: 180px;

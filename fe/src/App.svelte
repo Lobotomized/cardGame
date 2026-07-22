@@ -43,6 +43,7 @@
       <div class="menu-content">
         <h1 class="game-title">✿ Searching ✿</h1>
         <p class="search-message">{searchMessage}</p>
+        <p class="wait-info">You will wait for 5 to 30 seconds before finding an opponent.</p>
         <div class="spinner"></div>
       </div>
     </div>
@@ -181,6 +182,15 @@
     font-weight: 600;
   }
 
+  .wait-info {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 1rem;
+    color: #5c7e63;
+    margin: 0;
+    font-weight: 500;
+    font-style: italic;
+  }
+
   .spinner {
     width: 40px;
     height: 40px;
@@ -202,7 +212,7 @@
 
   .enemyHand{
     grid-area: enemyHand;
-    padding-top: 20px;
+    padding-top: 10px;
   }
 
   .cards {
@@ -222,13 +232,13 @@
   }
 
   .card-back {
-    width: calc(45px * var(--umnojitel)); /* 45px * 5 */
-    height: var(--card-height);
+    width: calc(45px * var(--umnojitel) * 0.4); 
+    height: calc(var(--card-height) * 0.4);
     background: linear-gradient(135deg, #333333 0%, #111111 100%);
     background-image: var(--paper-texture), linear-gradient(135deg, #333333 0%, #111111 100%);
-    border: 4px solid #555555;
-    border-radius: 16px;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255,255,255,0.05);
+    border: 3px solid #555555;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(255,255,255,0.05);
     position: relative;
     display: flex;
     justify-content: center;
@@ -238,9 +248,9 @@
   .card-back::before {
     content: '';
     position: absolute;
-    top: 12px; left: 12px; right: 12px; bottom: 12px;
-    border: 2px dashed rgba(255, 255, 255, 0.3);
-    border-radius: 10px;
+    top: 6px; left: 6px; right: 6px; bottom: 6px;
+    border: 1px dashed rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
   }
 
   .card-back::after {
@@ -249,7 +259,7 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: calc(0.8rem * var(--umnojitel));
+    font-size: calc(0.8rem * var(--umnojitel) * 0.5);
     color: #ffffff;
     opacity: 0.8;
     filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.5));

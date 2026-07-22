@@ -66,9 +66,9 @@ const modes:string[] = [
     position: absolute;
     left: 0;
     right: 0;
-    top: 0;
-    bottom: 0;
-    margin: auto;
+    top: 10vh;
+    bottom: auto;
+    margin: 0 auto;
     padding: 2rem;
     width: 90vw;
     max-width: 500px;
@@ -77,8 +77,8 @@ const modes:string[] = [
   }
   
   dialog::backdrop {
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(3px);
+    background: rgba(0, 0, 0, 0.2);
+    backdrop-filter: none;
   }
 
  .container {

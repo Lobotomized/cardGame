@@ -64,7 +64,7 @@ const moveFunction = function (player, move, state) {
     if (state.mode === 'readyCheck') {
         if (move.ready) {
             state[player.ref].ready = true;
-            if (state.player1.ready && state.player2.ready) {
+            if (state.player1 && state.player1.ready && state.player2 && state.player2.ready) {
                 state.mode = 'betting';
                 state.turn = 'player1';
             }
@@ -169,6 +169,10 @@ newG({
     minPlayers: 2,
     maxPlayers: 2, // Number of Players you want in a single game
     timeFunction: function (state) {
+        if (!state.player1 || !state.player2) {
+            return;
+        }
+
         if (!state.bigGameCards) {
             const shuffled = [...cards].sort(() => Math.random() - 0.5);
             state.bigGameCards = shuffled.slice(0, 16);
@@ -211,13 +215,21 @@ newG({
     joinBlockerFunction: delayStartBlocker.joinBlockerFunction,
     statePresenter: function (state, playerRef) {
         const toReturn = {...state};
-        toReturn[oppositePlayer(playerRef)] = ''
-        toReturn.me = state[playerRef]
-        toReturn.meRef = playerRef
-        toReturn.enemyScore = state[oppositePlayer(playerRef)].score
-        toReturn.enemyTaken = state[oppositePlayer(playerRef)].taken.length
-        toReturn.enemyHandSize = state[oppositePlayer(playerRef)].hand.length
-        toReturn.enemyReady = state[oppositePlayer(playerRef)].ready
+        const enemyRef = oppositePlayer(playerRef);
+        toReturn[enemyRef] = '';
+        toReturn.me = state[playerRef];
+        toReturn.meRef = playerRef;
+        if (state[enemyRef]) {
+            toReturn.enemyScore = state[enemyRef].score;
+            toReturn.enemyTaken = state[enemyRef].taken.length;
+            toReturn.enemyHandSize = state[enemyRef].hand.length;
+            toReturn.enemyReady = state[enemyRef].ready;
+        } else {
+            toReturn.enemyScore = 0;
+            toReturn.enemyTaken = 0;
+            toReturn.enemyHandSize = 0;
+            toReturn.enemyReady = false;
+        }
         return toReturn;
     },
     // connectFunction: function (state, playerRef) {
