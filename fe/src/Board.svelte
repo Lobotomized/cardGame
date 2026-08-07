@@ -185,40 +185,54 @@
     .deck-card {
         width: calc(30px * var(--umnojitel));
         height: calc(var(--card-height) * 0.55);
-        background: #1a1a1a;
+        background-color: #0f0f0f;
+        background-image: 
+            repeating-linear-gradient(45deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 12px),
+            repeating-linear-gradient(-45deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 12px);
         border: 4px solid var(--frame-color, #0a0a0a);
-        border-radius: 2px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(255,255,255,0.05);
+        border-radius: 3px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(0,0,0,0.8);
         position: relative;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        color: #aaaaaa;
+        color: #e0e0e0;
         font-family: 'Inter', sans-serif;
+        overflow: hidden;
     }
 
     .deck-card::before {
         content: '';
         position: absolute;
         top: 4px; left: 4px; right: 4px; bottom: 4px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 2px;
+        background: radial-gradient(circle at center, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.7) 100%);
         pointer-events: none;
+        z-index: 1;
     }
 
     .deck-card::after {
-        content: '🏛️';
+        content: '';
         position: absolute;
-        top: 10px;
-        right: 10px;
-        font-size: 1.5rem;
-        opacity: 0.6;
+        top: 50%; left: 50%;
+        width: 24px; height: 24px;
+        transform: translate(-50%, -50%) rotate(45deg);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 
+            inset 0 0 0 3px transparent, 
+            inset 0 0 0 4px rgba(255,255,255,0.08),
+            0 0 0 3px transparent, 
+            0 0 0 4px rgba(255,255,255,0.08);
         pointer-events: none;
+        z-index: 1;
     }
 
     .deck-count {
         font-size: calc(0.7rem * var(--umnojitel));
         font-weight: 700;
+        position: relative;
         z-index: 2;
         font-family: 'Playfair Display', serif;
     }
@@ -227,6 +241,7 @@
         font-size: calc(0.2rem * var(--umnojitel));
         font-weight: 600;
         letter-spacing: 2px;
+        position: relative;
         z-index: 2;
     }
 

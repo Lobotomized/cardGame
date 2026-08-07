@@ -10,6 +10,7 @@
     export let isMyTurn: boolean = false;
 
     let selectedCardIndex: number | null = null;
+    let isProcessing = false;
 
     function handleCardClick(cardIndex: number) {
         if (isAnimating) return;
@@ -21,9 +22,15 @@
     }
 
     function playCard(cardIndex: number) {
-        if (!isMyTurn) return;
+        if (!isMyTurn || isAnimating || isProcessing) return;
+        isProcessing = true;
         socket.emit('move', { cardIndex });
         selectedCardIndex = null;
+        
+        // Prevent double-clicking by adding a small local lock
+        setTimeout(() => {
+            isProcessing = false;
+        }, 500);
     }
 </script>
 
@@ -57,10 +64,10 @@
         <div class="overlay-buttons">
             <button 
                 class="btn-play" 
-                disabled={!isMyTurn}
-                on:click={() => isMyTurn && playCard(selectedCardIndex)}
+                disabled={!isMyTurn || isAnimating || isProcessing}
+                on:click={() => playCard(selectedCardIndex)}
             >
-                {isMyTurn ? 'Play the Card' : 'Wait your turn to play'}
+                {isAnimating ? 'Battle in progress...' : (isMyTurn ? 'Play the Card' : 'Wait your turn to play')}
             </button>
             <button class="btn-back" on:click={() => selectedCardIndex = null}>Back</button>
         </div>

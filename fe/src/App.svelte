@@ -233,32 +233,42 @@
   .card-back {
     width: calc(45px * var(--umnojitel) * 0.4); 
     height: calc(var(--card-height) * 0.4);
-    background: #1a1a1a;
+    background-color: #0f0f0f;
+    background-image: 
+        repeating-linear-gradient(45deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 12px),
+        repeating-linear-gradient(-45deg, rgba(255,255,255,0.03) 0px, rgba(255,255,255,0.03) 1px, transparent 1px, transparent 12px);
     border: 4px solid var(--frame-color, #0a0a0a);
-    border-radius: 2px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(255,255,255,0.05);
+    border-radius: 3px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(0,0,0,0.8);
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
   }
   
   .card-back::before {
     content: '';
     position: absolute;
     top: 4px; left: 4px; right: 4px; bottom: 4px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 2px;
+    z-index: 1;
   }
 
   .card-back::after {
-    content: '🏛️';
+    content: '';
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: calc(0.8rem * var(--umnojitel) * 0.5);
-    color: #aaaaaa;
-    opacity: 0.8;
+    top: 50%; left: 50%;
+    width: 14px; height: 14px;
+    transform: translate(-50%, -50%) rotate(45deg);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 
+        inset 0 0 0 3px #0f0f0f, 
+        inset 0 0 0 4px rgba(255,255,255,0.15),
+        0 0 0 3px #0f0f0f, 
+        0 0 0 4px rgba(255,255,255,0.15);
+    z-index: 2;
   }
 
   .board{
