@@ -24,7 +24,7 @@ module.exports = {
         intelligence:2,
         strength:12,
         descriptionTitle:"Fear",
-        description:"All cards enemy cards lose 1 from the game mode stat"
+        description:"All cards in the enemy hand lose 1 from the game mode stat"
     },
 
     forestDragon : {
@@ -62,7 +62,7 @@ module.exports = {
 
     //Agility characters
     antiMage: {
-        cardTitle:"Mage hunter",
+        cardTitle:"Inquisitor",
         special:"antiMage",
         animation:"antiMage",
         intelligence:5,

@@ -31,9 +31,9 @@
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div on:mouseenter={playVideo} on:mouseleave={pauseVideo} class="card" >
-    <div class="card-header">
+    <!-- <div class="card-header">
         {cardTitle}
-    </div>
+    </div> -->
     <div class="card-image">
         {#await import(`./assets/${animation}.mp4`)}
             <!-- Loading -->
@@ -48,7 +48,8 @@
         {/await}
     </div>
     <p class="description">
-        <b>{descriptionTitle} </b><br/>
+        <b> {cardTitle} </b><br/>
+        <i>{descriptionTitle}</i><br/>
         {description}
     </p>
     <div class="card-stats">
@@ -78,7 +79,6 @@
     height: 100%;
     background: #1a1a1a;
     background-image: var(--paper-texture), linear-gradient(to bottom, #1a1a1a, #000000);
-    border: 4px solid #ffffff;
     box-sizing: border-box;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
     cursor: pointer;
@@ -101,7 +101,6 @@
     text-align: center;
     padding: 8px 5px;
     background: transparent;
-    border-bottom: 2px dashed #555555;
     color: #ffffff;
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
     text-transform: uppercase;
@@ -122,7 +121,6 @@
 
  .card-image {
     width: 100%;
-    border-bottom: 2px dashed #555555;
     background: #000000;
     display: flex;
     justify-content: center;
@@ -132,7 +130,7 @@
 
  .card-video {
    width: 100%;
-   height: calc(var(--card-height) * 0.325);
+   height: calc(var(--card-height) * 0.450);
    object-fit: cover;
    display: block;
 }
@@ -148,7 +146,6 @@
     flex-direction: column;
     justify-content: flex-start;
     background: transparent;
-    border-bottom: 2px dashed #555555;
     line-height: 1.3;
     color: #dddddd;
     overflow: visible;
