@@ -185,53 +185,48 @@
     .deck-card {
         width: calc(30px * var(--umnojitel));
         height: calc(var(--card-height) * 0.55);
-        background: linear-gradient(135deg, #333333 0%, #111111 100%);
-        background-image: var(--paper-texture), linear-gradient(135deg, #333333 0%, #111111 100%);
-        border: 4px solid #555555;
-        border-radius: 16px;
-        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(255,255,255,0.05);
+        background: #1a1a1a;
+        border: 4px solid var(--frame-color, #0a0a0a);
+        border-radius: 2px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(255,255,255,0.05);
         position: relative;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        color: #ffffff;
-        font-family: 'Quicksand', sans-serif;
+        color: #aaaaaa;
+        font-family: 'Inter', sans-serif;
     }
 
     .deck-card::before {
         content: '';
         position: absolute;
-        top: 8px; left: 8px; right: 8px; bottom: 8px;
-        border: 2px dashed rgba(255, 255, 255, 0.3);
-        border-radius: 10px;
+        top: 4px; left: 4px; right: 4px; bottom: 4px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
         pointer-events: none;
     }
 
     .deck-card::after {
-        content: '💀';
+        content: '🏛️';
         position: absolute;
         top: 10px;
         right: 10px;
         font-size: 1.5rem;
-        color: #ffffff;
         opacity: 0.6;
-        filter: drop-shadow(1px 2px 3px rgba(0,0,0,0.5));
         pointer-events: none;
     }
 
     .deck-count {
         font-size: calc(0.7rem * var(--umnojitel));
-        font-weight: 800;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        font-weight: 700;
         z-index: 2;
+        font-family: 'Playfair Display', serif;
     }
 
     .deck-label {
         font-size: calc(0.2rem * var(--umnojitel));
-        font-weight: 700;
+        font-weight: 600;
         letter-spacing: 2px;
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
         z-index: 2;
     }
 

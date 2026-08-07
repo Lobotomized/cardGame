@@ -68,7 +68,7 @@ const specials = {
             myFirstCard.strength = 1;
         }
     },
-    antiMage:function(meRef,enemyRef,state){
+    inquisitor:function(meRef,enemyRef,state){
         const card = state.board[meRef];
         const enemyCard = state.board[enemyRef]
         if(card.intelligence < enemyCard.intelligence){
@@ -144,7 +144,11 @@ module.exports = {
     },
     special:function(meRef, enemyRef,state){
         const card = state.board[meRef]
-        specials[card.special](meRef,enemyRef,state)
+        if (card && card.special && typeof specials[card.special] === 'function') {
+            specials[card.special](meRef,enemyRef,state)
+        } else {
+            console.warn(`Warning: Special '${card?.special}' not found or is not a function for card '${card?.cardTitle}'`);
+        }
     },
     oppositePlayer:function(player){
         if(player === 'player1'){

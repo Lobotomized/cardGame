@@ -114,7 +114,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(0, 0, 0, 0.85);
+        background: rgba(18, 18, 18, 0.9);
         backdrop-filter: blur(5px);
         z-index: 9999;
         display: flex;
@@ -127,6 +127,7 @@
         transform: scale(1.5);
         margin-bottom: 70px;
         pointer-events: none;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.5);
     }
 
     @media (max-width: 600px) {
@@ -143,41 +144,43 @@
     }
 
     .overlay-buttons button {
-        font-family: 'Quicksand', sans-serif;
-        font-weight: 700;
+        font-family: 'Inter', sans-serif;
+        font-weight: 600;
         font-size: 1rem;
-        color: #ffffff;
         padding: 12px 24px;
-        border-radius: 8px;
+        border-radius: 2px;
         outline: none;
         cursor: pointer;
         text-transform: uppercase;
         letter-spacing: 1px;
-        border: 2px solid #ffffff;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
         transition: all 0.2s ease;
     }
 
     .btn-play {
-        background: linear-gradient(180deg, #5b8c5a 0%, #3a6b39 100%);
+        background: #f0f0f0;
+        color: #121212;
+        border: 1px solid #f0f0f0;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     }
     .btn-play:hover:not(:disabled) {
-        background: linear-gradient(180deg, #6c9d6b 0%, #4b7c4a 100%);
+        background: #ffffff;
         transform: translateY(-2px);
     }
     .btn-play:disabled {
-        background: linear-gradient(180deg, #888888 0%, #555555 100%);
-        color: #cccccc;
-        border-color: #999999;
+        background: #333333;
+        color: #888888;
+        border-color: #444444;
         cursor: not-allowed;
         box-shadow: none;
     }
 
     .btn-back {
-        background: linear-gradient(180deg, #8b4513 0%, #6b2500 100%);
+        background: #1e1e1e;
+        color: #f0f0f0;
+        border: 1px solid #f0f0f0;
     }
     .btn-back:hover {
-        background: linear-gradient(180deg, #9c5624 0%, #7c3611 100%);
+        background: #333333;
         transform: translateY(-2px);
     }
 </style>

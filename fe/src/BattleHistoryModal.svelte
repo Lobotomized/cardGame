@@ -108,7 +108,8 @@
   .modal-backdrop {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(18, 18, 18, 0.85);
+    backdrop-filter: blur(4px);
     z-index: 1000;
     display: flex;
     flex-direction: column;
@@ -119,17 +120,16 @@
   .modal-content {
     margin: auto;
     flex-shrink: 0;
-    background: #fdfaf6;
-    background-image: var(--paper-texture), linear-gradient(135deg, #fdfaf6, #f4eee1);
-    border: 3px dashed #8fb996;
-    border-radius: 16px;
+    background: #1e1e1e;
+    border: 1px solid #333333;
+    border-radius: 2px;
     width: 90%;
     max-width: 800px;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-    color: #2c3e2e;
-    font-family: 'Quicksand', sans-serif;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    color: #f0f0f0;
+    font-family: 'Inter', sans-serif;
   }
 
   .modal-header {
@@ -137,31 +137,32 @@
     justify-content: space-between;
     align-items: center;
     padding: 15px 25px;
-    border-bottom: 2px dashed #8fb996;
-    background: #e8f0e6;
-    border-radius: 16px 16px 0 0;
+    border-bottom: 1px solid #333333;
+    background: #121212;
+    border-radius: 2px 2px 0 0;
   }
 
   .modal-header h2 {
     margin: 0;
-    color: #2c3e2e;
+    color: #f0f0f0;
     font-weight: 700;
     letter-spacing: 2px;
     text-transform: uppercase;
+    font-family: 'Playfair Display', serif;
   }
 
   .close-btn {
     background: none;
     border: none;
     font-size: 1.5rem;
-    color: #2c3e2e;
+    color: #cccccc;
     cursor: pointer;
     padding: 0;
     font-weight: bold;
   }
 
   .close-btn:hover {
-    color: #1a251b;
+    color: #ffffff;
   }
 
   .history-list {
@@ -174,7 +175,7 @@
   .empty-state {
     text-align: center;
     font-size: 1.2rem;
-    color: #5c7e63;
+    color: #aaaaaa;
     padding: 40px;
     font-style: italic;
   }
@@ -189,9 +190,9 @@
   }
 
   .trick-row {
-    background: rgba(255, 255, 255, 0.5);
-    border: 2px dashed #b5d1b9;
-    border-radius: 12px;
+    background: #121212;
+    border: 1px solid #333333;
+    border-radius: 2px;
     padding: 15px;
     display: flex;
     flex-direction: column;
@@ -206,12 +207,13 @@
   }
 
   .trick-number {
-    font-weight: bold;
-    color: #5c7e63;
+    font-weight: 600;
+    color: #cccccc;
     text-transform: uppercase;
     letter-spacing: 1px;
-    border-bottom: 1px solid #d4e5d1;
+    border-bottom: 1px solid #333333;
     padding-bottom: 5px;
+    font-family: 'Playfair Display', serif;
   }
 
   .card-wrapper {
@@ -239,7 +241,7 @@
 
   .label {
     font-weight: 600;
-    color: #2c3e2e;
+    color: #cccccc;
     text-transform: uppercase;
     transition: opacity 0.2s;
   }
@@ -260,7 +262,7 @@
     min-height: var(--card-height);
     transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     z-index: 1;
-    border-radius: 16px;
+    border-radius: 2px;
     display: flex;
   }
 
@@ -268,7 +270,7 @@
   .card-wrapper:focus .card-scaler,
   .card-wrapper:focus-within .card-scaler {
     transform: translate(-50%, -50%) scale(1);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
     z-index: 1000;
   }
 
@@ -282,43 +284,48 @@
 
   .vs {
     font-size: 1.5rem;
-    color: #8fb996;
+    color: #888888;
+    font-family: 'Playfair Display', serif;
   }
 
   .winner-badge {
     padding: 5px 10px;
-    border-radius: 8px;
+    border-radius: 2px;
     font-size: 0.9rem;
-    background: #d4e5d1;
-    color: #2c3e2e;
+    background: #1a1a1a;
+    color: #f0f0f0;
     text-align: center;
+    border: 1px solid #333333;
   }
 
   .winner-badge.win {
-    background: #8fb996;
-    color: white;
+    background: #f0f0f0;
+    color: #121212;
+    border-color: #f0f0f0;
   }
 
   .winner-badge.loss {
-    background: #e5a5a5;
-    color: white;
+    background: #444444;
+    color: #f0f0f0;
+    border-color: #444444;
   }
 
   .unplayed-section {
     padding: 20px;
-    border-top: 2px dashed #8fb996;
-    background: rgba(255, 255, 255, 0.3);
-    border-radius: 0 0 16px 16px;
+    border-top: 1px solid #333333;
+    background: #121212;
+    border-radius: 0 0 2px 2px;
   }
 
   .section-title {
     margin: 0 0 15px 0;
-    color: #2c3e2e;
+    color: #f0f0f0;
     font-size: 1.2rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 1px;
     text-align: center;
+    font-family: 'Playfair Display', serif;
   }
 
   .unplayed-grid {
@@ -360,7 +367,7 @@
   .unplayed-card-wrapper:focus .card-scaler,
   .unplayed-card-wrapper:focus-within .card-scaler {
     transform: translate(-50%, -50%) scale(0.8);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.5);
     z-index: 1000;
   }
 

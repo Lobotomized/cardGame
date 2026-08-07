@@ -63,8 +63,8 @@ module.exports = {
     //Agility characters
     antiMage: {
         cardTitle:"Inquisitor",
-        special:"antiMage",
-        animation:"antiMage",
+        special:"inquisitor",
+        animation:"inquisitor",
         intelligence:5,
         strength:5,
         agility:8,

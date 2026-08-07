@@ -55,13 +55,12 @@ const modes:string[] = [
 
 <style>
   dialog {
-    background: #1a1a1a;
-    background-image: var(--paper-texture), linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%);
-    border: 4px solid #ffffff;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8);
-    border-radius: 16px 16px 24px 24px;
-    color: #ffffff;
-    font-family: 'Quicksand', sans-serif;
+    background: #1e1e1e;
+    border: 1px solid #333333;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    border-radius: 2px;
+    color: #f0f0f0;
+    font-family: 'Inter', sans-serif;
     z-index: 100;
     position: absolute;
     left: 0;
@@ -77,8 +76,8 @@ const modes:string[] = [
   }
   
   dialog::backdrop {
-    background: rgba(0, 0, 0, 0.2);
-    backdrop-filter: none;
+    background: rgba(18, 18, 18, 0.8);
+    backdrop-filter: blur(2px);
   }
 
  .container {
@@ -88,34 +87,33 @@ const modes:string[] = [
  }
 
  .enemy-vote {
-   font-size: 1.2rem;
-   color: #dddddd;
-   font-weight: 700;
-   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
+   font-size: 1.1rem;
+   color: #cccccc;
+   font-weight: 600;
    margin-bottom: 1rem;
    display: block;
+   font-family: 'Playfair Display', serif;
  }
 
  .enemy-voting-text {
-   color: #ffffff;
-   font-size: 1.8rem;
+   color: #f0f0f0;
+   font-size: 1.5rem;
    text-transform: uppercase;
    letter-spacing: 2px;
-   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
    margin: 2rem 0;
+   font-family: 'Playfair Display', serif;
  }
 
  button {
-  font-family: 'Quicksand', sans-serif;
-  font-weight: 700;
-  font-size: 1.1rem;
-  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #121212;
   padding: 12px 24px;
-  border-radius: 8px;
-  background: linear-gradient(180deg, #333333 0%, #111111 100%);
+  border-radius: 2px;
+  background: #f0f0f0;
   outline: none;
-  border: 2px solid #ffffff;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+  border: 1px solid #f0f0f0;
   cursor: pointer;
   transition: all 0.2s ease-out;
   text-transform: uppercase;
@@ -123,50 +121,44 @@ const modes:string[] = [
  }
 
  button:hover {
-  background: linear-gradient(180deg, #555555 0%, #333333 100%);
-  border-color: #cccccc;
-  color: #ffffff;
-  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
+  background: #ffffff;
+  color: #121212;
   transform: translateY(-2px);
  }
  
  .give-up-btn {
    margin-top: 1rem;
-   background: linear-gradient(180deg, #500000 0%, #300000 100%);
-   border-color: #ff0000;
-   color: #ffcccc;
+   background: #1e1e1e;
+   border-color: #ff5555;
+   color: #ff5555;
  }
 
  .give-up-btn:hover {
-   background: linear-gradient(180deg, #700000 0%, #500000 100%);
-   border-color: #ff5555;
-   box-shadow: 0 4px 10px rgba(255, 0, 0, 0.3);
+   background: #ff5555;
    color: #ffffff;
  }
 
  .modeName {
-  color: #ffffff;
+  color: #f0f0f0;
   text-transform: uppercase;
   letter-spacing: 2px;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   margin-bottom: 15px;
-  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
-  border-bottom: 2px solid #555555;
+  border-bottom: 1px solid #333333;
   padding-bottom: 5px;
   width: 100%;
+  font-family: 'Playfair Display', serif;
  }
 
  .modeBet {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: rgba(30, 30, 30, 0.8);
-  background-image: var(--paper-texture);
-  border: 2px dashed #777777;
+  background: #121212;
+  border: 1px solid #333333;
   padding: 1.5rem 1rem;
-  border-radius: 16px;
+  border-radius: 2px;
   width: 100%;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
  }
 
  .bets {
@@ -195,10 +187,10 @@ const modes:string[] = [
    }
    button {
      padding: 8px 12px;
-     font-size: 0.9rem;
+     font-size: 0.8rem;
    }
    .enemy-voting-text {
-     font-size: 1.3rem;
+     font-size: 1.2rem;
    }
  }
 </style>

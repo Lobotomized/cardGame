@@ -77,96 +77,89 @@
     width: calc(45px * var(--umnojitel));
     min-height: var(--card-height);
     height: 100%;
-    background: #1a1a1a;
-    background-image: var(--paper-texture), linear-gradient(to bottom, #1a1a1a, #000000);
+    background: var(--card-background);
     box-sizing: border-box;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
     cursor: pointer;
-    border-radius: 12px 12px 24px 24px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-    overflow: hidden;
+    border: 1px solid #333333;
+    border-radius: 2px;
+    padding: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     position: relative;
-    font-family: 'Quicksand', sans-serif;
  }
 
  .card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 8px 16px rgba(255, 255, 255, 0.2);
-    border-color: #cccccc;
+    transform: translateY(-5px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.8);
  }
 
  .card-header {
-    font-weight: 800;
+    font-weight: 700;
     font-size: 1.1rem;
     text-align: center;
     padding: 8px 5px;
-    background: transparent;
-    color: #ffffff;
-    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
+    color: var(--letters-color);
     text-transform: uppercase;
-    letter-spacing: 1.5px;
+    letter-spacing: 2px;
     margin: 0;
     flex-shrink: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 6px;
- }
-
- .card-header::before, .card-header::after {
-    content: '✧';
-    color: #ffffff;
-    font-size: 0.9em;
  }
 
  .card-image {
     width: 100%;
-    background: #000000;
+    background: #111111;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-shrink: 0;
+    border: 6px solid var(--frame-color);
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.8), 0 4px 8px rgba(0,0,0,0.5);
+    margin-bottom: 12px;
  }
 
  .card-video {
    width: 100%;
-   height: calc(var(--card-height) * 0.450);
+   height: calc(var(--card-height) * 0.400);
    object-fit: cover;
    display: block;
 }
 
  .description {
-    text-align: center;
-    padding: 8px 10px;
-    margin: 0;
-    font-weight: 600;
+    text-align: left;
+    padding: 0 8px;
+    margin: 0 0 10px 0;
     font-size: 0.85rem;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    background: transparent;
-    line-height: 1.3;
-    color: #dddddd;
-    overflow: visible;
+    line-height: 1.4;
+    color: #cccccc;
+    border-left: 2px solid var(--accent-color);
  }
 
  .description b {
-    color: #ffffff;
+    color: #f0f0f0;
     font-size: 0.95rem;
     margin-bottom: 4px;
     text-transform: uppercase;
     letter-spacing: 1px;
+    font-family: 'Playfair Display', serif;
+ }
+
+ .description i {
+    color: #aaaaaa;
+    margin-bottom: 4px;
  }
 
  .card-stats {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    padding: 8px 10px;
-    background: transparent;
     gap: 8px;
     flex-shrink: 0;
+    border-top: 1px solid #333333;
+    padding-top: 8px;
  }
 
  .stat {
@@ -174,12 +167,10 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border: 2px solid #555555;
+    border: 1px solid #444444;
     padding: 4px 0;
     flex: 1;
-    border-radius: 12px;
-    background: rgba(30, 30, 30, 0.9);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    background: #1a1a1a;
     transition: all 0.3s ease;
  }
 
@@ -189,81 +180,48 @@
     color: #aaaaaa;
     text-transform: uppercase;
     letter-spacing: 1px;
-    font-weight: 700;
+    font-weight: 600;
  }
 
  .stat > p {
     margin: 2px 0 0 0;
-    font-weight: 700;
+    font-weight: 400;
     font-size: 1.2rem;
-    color: #ffffff;
+    color: #f0f0f0;
+    font-family: 'Georgia', serif;
  }
 
  .activeStat {
-    background: rgba(255, 255, 255, 0.9);
-    border-color: #ffffff;
-    box-shadow: inset 0 0 8px rgba(0,0,0,0.8), 0 0 8px rgba(255, 255, 255, 0.4);
+    background: var(--active-stat-color);
+    border-color: var(--accent-color);
+    box-shadow: inset 0 0 0 1px var(--accent-color);
  }
 
  .activeStat > h4 {
-    color: #000000;
+    color: var(--accent-color);
  }
 
  .activeStat > p {
-    color: #000000;
+    color: #ffffff;
+    font-weight: 700;
  }
 
  @media (max-width: 900px) {
-    .card-header {
-       font-size: 0.9rem;
-       padding: 4px 2px;
-    }
-    .description {
-       font-size: 0.7rem;
-       padding: 4px 5px;
-    }
-    .description b {
-       font-size: 0.75rem;
-    }
-    .card-stats {
-       padding: 4px 5px;
-       gap: 4px;
-    }
-    .stat > h4 {
-       font-size: 0.6rem;
-    }
-    .stat > p {
-       font-size: 0.9rem;
-    }
+    .card { padding: 6px; }
+    .card-image { border-width: 4px; margin-bottom: 8px; }
+    .description { font-size: 0.7rem; padding: 0 4px; }
+    .description b { font-size: 0.8rem; }
+    .stat > h4 { font-size: 0.6rem; }
+    .stat > p { font-size: 0.9rem; }
  }
 
  @media (max-width: 600px) {
-    .card-header {
-       font-size: 0.7rem;
-       padding: 2px 1px;
-    }
-    .description {
-       font-size: 0.55rem;
-       padding: 2px 3px;
-       line-height: 1.1;
-    }
-    .description b {
-       font-size: 0.6rem;
-       margin-bottom: 2px;
-    }
-    .card-stats {
-       padding: 2px 3px;
-       gap: 2px;
-    }
-    .stat {
-       padding: 2px 0;
-       border-radius: 6px;
-    }
-    .stat > h4 {
-       font-size: 0.5rem;
-    }
-    .stat > p {
-       font-size: 0.7rem;
-    }
+    .card { padding: 4px; }
+    .card-image { border-width: 3px; margin-bottom: 4px; }
+    .description { font-size: 0.55rem; padding: 0 2px; }
+    .description b { font-size: 0.65rem; }
+    .card-stats { padding-top: 4px; gap: 4px; }
+    .stat > h4 { font-size: 0.5rem; }
+    .stat > p { font-size: 0.7rem; }
  }
 </style>
