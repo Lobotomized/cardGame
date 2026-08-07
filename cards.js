@@ -6,6 +6,16 @@
 */
 module.exports = {
     //Strength chars
+    behhemoth: {
+        cardTitle:"Behhemoth",
+        special:"Feed the beast",
+        animation:"behhemoth",
+        agility:4,
+        intelligence:4,
+        strength:20,
+        descriptionTitle:"Your first and last cards become 1/1/1",
+        description:""
+    },
     giant: {
         cardTitle:"Giant",
         special:"none",
@@ -70,6 +80,16 @@ module.exports = {
         agility:8,
         descriptionTitle:"Intelligence Trap",
         description:"If you have less intelligence than the enemy, the enemy loses all stats."
+    },
+    apparition:{
+        cardTitle:"Apparition",
+        special:"Call from the past",
+        animation:"apparition",
+        intelligence:6,
+        strength:4,
+        agility:8,
+        descriptionTitle:"Call from the past",
+        description:"Use the special of the last winning card."
     },
     theThing: {
         cardTitle:"The Thing",
@@ -162,6 +182,17 @@ module.exports = {
         intelligence:13,
         strength:5,
         agility:5
+    },
+
+    azazel: {
+        cardTitle:"Azazel",
+        special:"Soul Eater",
+        animation:"azazel",
+        agility:5,
+        intelligence:10,
+        strength:3,
+        descriptionTitle:"The first and last cards in the enemies hand loses it's special power",
+        description:""
     },
 
     //Balanced

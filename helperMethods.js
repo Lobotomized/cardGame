@@ -119,6 +119,43 @@ const specials = {
         if(card[state.mode] < enemyCard[state.mode] && state[meRef].hand[0]){
             card[state.mode] = state[meRef].hand[0][state.mode]
         } 
+    },
+    "Feed the beast":function(meRef,enemyRef,state){
+        const myFirstCard = state[meRef].hand[0];
+        if(myFirstCard){
+            myFirstCard.agility = 1;
+            myFirstCard.intelligence = 1;
+            myFirstCard.strength = 1;
+        }
+        const myLastCard = state[meRef].hand[state[meRef].hand.length - 1];
+        if(myLastCard){
+            myLastCard.agility = 1;
+            myLastCard.intelligence = 1;
+            myLastCard.strength = 1;
+        }
+    },
+    "Soul Eater":function(meRef,enemyRef,state){
+        const enemyFirstCard = state[enemyRef].hand[0];
+        if(enemyFirstCard){
+            enemyFirstCard.special = "none";
+            enemyFirstCard.descriptionTitle = "No special";
+            enemyFirstCard.description = "";
+        }
+        const enemyLastCard = state[enemyRef].hand[state[enemyRef].hand.length - 1];
+        if(enemyLastCard){
+            enemyLastCard.special = "none";
+            enemyLastCard.descriptionTitle = "No special";
+            enemyLastCard.description = "";
+        }
+    },
+    "Call from the past":function(meRef,enemyRef,state){
+        const lastTrick = state.board.lastTrick;
+        if(lastTrick && lastTrick.winnerCard && lastTrick.winnerCard.special){
+            const specialToCall = lastTrick.winnerCard.special;
+            if(specialToCall !== "none" && specialToCall !== "Call from the past" && typeof specials[specialToCall] === 'function'){
+                specials[specialToCall](meRef, enemyRef, state);
+            }
+        }
     }
 }
 
