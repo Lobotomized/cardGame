@@ -24,7 +24,7 @@ function handleReady() {
         <div class="cards-grid">
             {#each state.board?.publicDeck || [] as card}
                 <div class="card-wrapper">
-                    <Card card={card} mode="intelligence" />
+                    <Card card={card} mode={state.mode} />
                 </div>
             {/each}
         </div>
