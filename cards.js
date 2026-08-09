@@ -15,7 +15,7 @@ module.exports = {
         intelligence:4,
         strength:25,
         descriptionTitle:"Curse of God",
-        description:"Feed the Beast"
+        description:"Make the first and last card in your hand 1/1/1"
     },
     giant: {
         cardTitle:"Giant",
