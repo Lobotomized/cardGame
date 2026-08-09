@@ -8,11 +8,13 @@
   import type { stateType } from './types/State';
   import Endscreen from './Endscreen.svelte';
   import ReadyCheck from './ReadyCheck.svelte';
+  import Tutorial from './Tutorial.svelte';
 
   let socket: any = null;
   let state:stateType | null  = null;
   let isAnimating = false;
   let showHistory = false;
+  let showTutorial = false;
   let searching = true;
   let searchMessage = "Finding opponent...";
 
@@ -32,6 +34,24 @@
       }) // Return State
   }
 
+  function stopSearching() {
+    if (socket) {
+      socket.disconnect();
+      socket = null;
+    }
+    searching = false;
+  }
+
+  function handleTutorialOpen() {
+    stopSearching();
+    showTutorial = true;
+  }
+
+  function handleTutorialClose() {
+    showTutorial = false;
+    findOpponent();
+  }
+
   onMount(() => {
     findOpponent();
   });
@@ -40,16 +60,21 @@
 <main>
   {#if !state && searching}
     <div class="start-menu">
-      <div class="menu-content">
-        <h1 class="game-title">Exhibition Hall</h1>
-        <p class="search-message">{searchMessage}</p>
-        <p class="wait-info">Awaiting another curator...</p>
-        <div class="spinner"></div>
-      </div>
+    <div class="menu-content">
+      <h1 class="game-title">Exhibition Hall</h1>
+      <p class="search-message">{searchMessage}</p>
+      <p class="wait-info">Awaiting another curator...</p>
+      <div class="spinner"></div>
+      <button class="tutorial-btn" on:click={handleTutorialOpen}>How to Play</button>
     </div>
-  {/if}
+  </div>
+{/if}
 
-  {#if state}
+{#if showTutorial}
+  <Tutorial on:close={handleTutorialClose} />
+{/if}
+
+{#if state}
   <Vote socket={socket} state={state}></Vote>
   <ReadyCheck socket={socket} state={state}></ReadyCheck>
   {/if}
@@ -202,6 +227,27 @@
   @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+  }
+
+  .tutorial-btn {
+    margin-top: 1rem;
+    padding: 12px 24px;
+    background: transparent;
+    border: 1px solid #f0f0f0;
+    color: #f0f0f0;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .tutorial-btn:hover {
+    background: #f0f0f0;
+    color: #121212;
+    transform: translateY(-2px);
   }
 
   .hand{
