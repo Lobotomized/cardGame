@@ -83,6 +83,9 @@ const specials = {
                 intelligence: 0, strength: 0, agility: 0,descriptionTitle:"Wish", description:"", special: "none" },
         )
     },
+    loseAPoint:function(meRef,enemyRef,state){
+        state[meRef].taken.pop()
+    },
     science:function(meRef,enemyRef,state){
         state[meRef].hand.forEach((card)  => {
             card[state.mode]+=1;

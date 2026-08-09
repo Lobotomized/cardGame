@@ -247,7 +247,7 @@ false,
             if (!game.createdTime) {
                 game.createdTime = Date.now();
             }
-            if (Date.now() - game.createdTime > 30000) {
+            if (Date.now() - game.createdTime > 0) {
                 game.joinBot(Math.random().toString().substr(2, 6));
                 game.createdTime = null; // reset to avoid multiple bots
             }

@@ -1,5 +1,6 @@
 /*
-    negative special - 28
+    very negative special - 32
+    negative special - 27
     without special - 23
     with special - 18
     with strong special - 14
@@ -12,7 +13,7 @@ module.exports = {
         animation:"behhemoth",
         agility:4,
         intelligence:4,
-        strength:20,
+        strength:25,
         descriptionTitle:"Your first and last cards become 1/1/1",
         description:""
     },
@@ -247,7 +248,16 @@ module.exports = {
         agility:7
     },
 
-
+    cerberus: {
+        cardTitle:"Cerberus",
+        special:"loseAPoint",
+        animation:"cerberus",
+        description:"Eat the last card you have in your winning cards",
+        descriptionTitle:"Feed the Dog",
+        intelligence:7,
+        strength:11,
+        agility:9
+    },
     //1 lacking
     saturn: {
         cardTitle:"Saturn",
