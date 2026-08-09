@@ -14,8 +14,8 @@ module.exports = {
         agility:4,
         intelligence:4,
         strength:25,
-        descriptionTitle:"Your first and last cards become 1/1/1",
-        description:""
+        descriptionTitle:"Curse of God",
+        description:"Feed the Beast"
     },
     giant: {
         cardTitle:"Giant",
@@ -141,7 +141,7 @@ module.exports = {
         animation:"scientist",
         strength:2,
         agility:2,
-        descriptionTitle:"Science!!!",
+        descriptionTitle:"Eureka!!!",
         description:"All cards in your hand get +1 for the game mode stat"
     },
     witch: {
@@ -192,8 +192,8 @@ module.exports = {
         agility:5,
         intelligence:10,
         strength:3,
-        descriptionTitle:"The first and last cards in the enemies hand loses it's special power",
-        description:""
+        descriptionTitle:"Soul Eater",
+        description:"The first and last cards in the enemies hand loses it's special power"
     },
 
     //Balanced
