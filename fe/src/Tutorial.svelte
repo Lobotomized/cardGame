@@ -745,14 +745,14 @@
     transform: translateY(-1px);
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 900px) {
     .showcase {
       transform: scale(1);
     }
 
     .intro-cards {
-      transform: scale(0.9);
-      gap: 10px;
+      transform: scale(1);
+      gap: 5px;
     }
     
     .header {
@@ -764,11 +764,80 @@
     }
     
     .content-area {
-      padding: 1rem;
+      padding: 0.5rem;
+      gap: 1rem;
     }
     
     .description {
+      font-size: 0.95rem;
+    }
+
+    .visuals {
+      --umnojitel: 1.6;
+      --card-height: 130px;
+    }
+
+    :global(.visuals .card .description) {
+      font-size: 0.5rem !important;
+      padding: 0 2px !important;
+    }
+    :global(.visuals .card .description b) {
+      font-size: 0.6rem !important;
+    }
+    :global(.visuals .card .stat > h4) {
+      font-size: 0.4rem !important;
+    }
+    :global(.visuals .card .stat > p) {
+      font-size: 0.75rem !important;
+    }
+    :global(.visuals .card) {
+      padding: 4px !important;
+    }
+    :global(.visuals .card-image) {
+      border-width: 2px !important;
+      margin-bottom: 4px !important;
+    }
+
+    .mock-vote-container {
+      padding: 1rem;
+      gap: 1rem;
+      width: 95vw;
+    }
+    .bets {
+      gap: 0.5rem;
+      margin-bottom: 5px;
+    }
+    .modeBet {
+      padding: 1rem 0.5rem;
+      min-width: 80px;
+    }
+    .modeName {
       font-size: 1rem;
+      margin: 0 0 10px 0;
+    }
+    .mock-btn {
+      padding: 8px 16px;
+      font-size: 0.9rem;
+    }
+    .interactive-showcase {
+      gap: 10px;
+    }
+    .hand-wrapper {
+      padding: 5px;
+    }
+    .footer {
+      padding: 1rem;
+    }
+    button {
+      padding: 0.6rem 1rem;
+      font-size: 0.9rem;
+    }
+    .progress {
+      gap: 4px;
+    }
+    .dot {
+      width: 8px;
+      height: 8px;
     }
   }
 </style>

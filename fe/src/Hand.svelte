@@ -131,16 +131,26 @@
     }
 
     .overlay-card-wrapper {
-        transform: scale(1.5);
-        margin-bottom: 70px;
+        --card-height: 360px;
+        --umnojitel: 4.5;
+        margin-bottom: 30px;
         pointer-events: none;
         box-shadow: 0 20px 40px rgba(0,0,0,0.5);
     }
 
-    @media (max-width: 600px) {
+    @media (max-height: 600px) {
         .overlay-card-wrapper {
-            transform: scale(2.2);
-            margin-bottom: 120px;
+            --card-height: 280px;
+            --umnojitel: 3.5;
+            margin-bottom: 20px;
+        }
+    }
+    
+    @media (max-height: 450px) {
+        .overlay-card-wrapper {
+            --card-height: 200px;
+            --umnojitel: 2.5;
+            margin-bottom: 10px;
         }
     }
 

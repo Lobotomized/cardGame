@@ -14,6 +14,12 @@
     $: cardTitle = card.cardTitle
     let video:HTMLVideoElement;
 
+    function handleVideoLoaded() {
+        if (video && video.readyState >= 1) {
+            video.currentTime = 0.1;
+        }
+    }
+
     function playVideo() {
         if (video) {
             video.play().catch(() => {});
@@ -38,7 +44,7 @@
         {#await import(`./assets/${animation}.mp4`)}
             <!-- Loading -->
         {:then { default: anim }}
-            <video class="card-video" bind:this={video} muted preload="auto">
+            <video class="card-video" bind:this={video} muted preload="auto" playsinline on:loadedmetadata={handleVideoLoaded}>
                 <source src={anim} type="video/mp4">
             </video>
         {:catch}
