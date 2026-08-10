@@ -53,11 +53,11 @@
             {/await}
         {/await}
     </div>
-    <p class="description">
-        <b> {cardTitle} </b><br/>
-        <i>{descriptionTitle}</i><br/>
-        {description}
-    </p>
+    <div class="description">
+        <div class="card-name-title">{cardTitle}</div>
+        <div class="skill-name-title">{descriptionTitle}</div>
+        <div class="skill-desc-text">{description}</div>
+    </div>
     <div class="card-stats">
         <div class="stat" class:activeStat={mode === 'agility'}>
             <h4>Agi</h4>
@@ -81,8 +81,7 @@
     display: flex;
     flex-direction: column;
     width: calc(45px * var(--umnojitel));
-    min-height: var(--card-height);
-    height: 100%;
+    height: var(--card-height);
     background: var(--card-background);
     box-sizing: border-box;
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
@@ -142,20 +141,47 @@
     line-height: 1.4;
     color: #cccccc;
     border-left: 2px solid var(--accent-color);
+    overflow-x: hidden;
+    overflow-y: auto;
+    min-height: 0;
  }
 
- .description b {
+ /* Custom scrollbar for description to keep it neat */
+ .description::-webkit-scrollbar {
+    width: 4px;
+ }
+ .description::-webkit-scrollbar-track {
+    background: transparent;
+ }
+ .description::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 2px;
+ }
+
+ .card-name-title {
     color: #f0f0f0;
     font-size: 0.95rem;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
     text-transform: uppercase;
     letter-spacing: 1px;
     font-family: 'Playfair Display', serif;
+    font-weight: bold;
+    flex-shrink: 0;
+    word-break: break-word;
+    hyphens: auto;
  }
 
- .description i {
+ .skill-name-title {
     color: #aaaaaa;
     margin-bottom: 4px;
+    font-style: italic;
+    flex-shrink: 0;
+    word-break: break-word;
+ }
+
+ .skill-desc-text {
+    flex-shrink: 0;
+    word-break: break-word;
  }
 
  .card-stats {
@@ -212,20 +238,22 @@
     font-weight: 700;
  }
 
- @media (max-width: 900px) {
+ @media (max-width: 900px), (max-height: 800px) {
     .card { padding: 6px; }
-    .card-image { border-width: 4px; margin-bottom: 8px; }
-    .description { font-size: 0.7rem; padding: 0 4px; }
-    .description b { font-size: 0.8rem; }
+    .card-image { border-width: 4px; margin-bottom: 6px; }
+    .card-video { height: calc(var(--card-height) * 0.35); }
+    .description { font-size: 0.7rem; padding: 0 4px; margin-bottom: 4px; }
+    .card-name-title { font-size: 0.8rem; }
     .stat > h4 { font-size: 0.6rem; }
     .stat > p { font-size: 0.9rem; }
  }
 
- @media (max-width: 600px) {
+ @media (max-width: 600px), (max-height: 600px) {
     .card { padding: 4px; }
     .card-image { border-width: 3px; margin-bottom: 4px; }
-    .description { font-size: 0.55rem; padding: 0 2px; }
-    .description b { font-size: 0.65rem; }
+    .card-video { height: calc(var(--card-height) * 0.32); }
+    .description { font-size: 0.55rem; padding: 0 2px; margin-bottom: 2px; }
+    .card-name-title { font-size: 0.65rem; }
     .card-stats { padding-top: 4px; gap: 4px; }
     .stat > h4 { font-size: 0.5rem; }
     .stat > p { font-size: 0.7rem; }

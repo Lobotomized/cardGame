@@ -89,7 +89,7 @@
         gap: 20px;
         height: 100%;
         width: 100%;
-        overflow: hidden;
+        overflow: visible;
     }
     
     .center-area {

@@ -313,13 +313,11 @@
       <div class="visuals" class:highlight-intelligence={step === 4}>
         {#if step === 0}
           <div class="intro-cards">
-            <Card card={sphinxCard} mode={{attribute: 'intelligence', isReversed: false}} />
-            <Card card={exampleCard} mode={{attribute: 'intelligence', isReversed: false}} />
-            <Card card={inquisitorCard} mode={{attribute: 'intelligence', isReversed: false}} />
+            <Hand socket={dummySocket} cards={[sphinxCard, exampleCard, inquisitorCard]} mode={{attribute: 'intelligence', isReversed: false}} hidePlayButton={true} />
           </div>
         {:else if step === 1}
           <div class="showcase">
-            <Card card={exampleCard} mode={{attribute: 'intelligence', isReversed: false}} />
+            <Hand socket={dummySocket} cards={[exampleCard]} mode={{attribute: 'intelligence', isReversed: false}} hidePlayButton={true} />
           </div>
         {:else if step === 2}
           <div class="interactive-showcase">
@@ -480,23 +478,41 @@
   }
 
   /* Override Card.svelte font sizes for the tutorial container to prevent overflow when scaling down via CSS variables */
-  :global(.visuals .card .description) {
+  :global(.visuals .cards .card .description),
+  :global(.visuals .board .card .description) {
     font-size: 0.6rem !important;
     padding: 0 4px !important;
+    min-height: 0 !important;
+    margin-bottom: 2px !important;
   }
-  :global(.visuals .card .description b) {
+  :global(.visuals .cards .card .card-name-title),
+  :global(.visuals .board .card .card-name-title) {
     font-size: 0.7rem !important;
+    margin-bottom: 0px !important;
   }
-  :global(.visuals .card .stat > h4) {
+  :global(.visuals .cards .card .skill-name-title),
+  :global(.visuals .board .card .skill-name-title) {
+    font-size: 0.6rem !important;
+    margin-bottom: 0px !important;
+  }
+  :global(.visuals .cards .card .skill-desc-text),
+  :global(.visuals .board .card .skill-desc-text) {
+    font-size: 0.55rem !important;
+  }
+  :global(.visuals .cards .card .stat > h4),
+  :global(.visuals .board .card .stat > h4) {
     font-size: 0.5rem !important;
   }
-  :global(.visuals .card .stat > p) {
+  :global(.visuals .cards .card .stat > p),
+  :global(.visuals .board .card .stat > p) {
     font-size: 0.9rem !important;
   }
-  :global(.visuals .card) {
+  :global(.visuals .cards .card),
+  :global(.visuals .board .card) {
     padding: 6px !important;
   }
-  :global(.visuals .card-image) {
+  :global(.visuals .cards .card-image),
+  :global(.visuals .board .card-image) {
     border-width: 4px !important;
     margin-bottom: 6px !important;
   }
@@ -516,7 +532,8 @@
   }
 
   .showcase {
-    transform: scale(1.8);
+    --umnojitel: 3.96;
+    --card-height: 324px;
   }
 
   .intro-cards {
@@ -524,7 +541,8 @@
     gap: 20px;
     justify-content: center;
     align-items: center;
-    transform: scale(1.2);
+    --umnojitel: 2.64;
+    --card-height: 250px;
     flex-wrap: wrap;
     width: 100%;
   }
@@ -745,13 +763,14 @@
     transform: translateY(-1px);
   }
 
-  @media (max-width: 900px) {
+  @media (max-width: 900px), (max-height: 800px) {
     .showcase {
-      transform: scale(1);
+      --umnojitel: 1.6;
+      --card-height: 180px;
     }
-
     .intro-cards {
-      transform: scale(1);
+      --umnojitel: 1.6;
+      --card-height: 180px;
       gap: 5px;
     }
     
@@ -774,26 +793,44 @@
 
     .visuals {
       --umnojitel: 1.6;
-      --card-height: 130px;
+      --card-height: 180px;
     }
 
-    :global(.visuals .card .description) {
+    :global(.visuals .cards .card .description),
+    :global(.visuals .board .card .description) {
       font-size: 0.5rem !important;
       padding: 0 2px !important;
+      min-height: 0 !important;
+      margin-bottom: 2px !important;
     }
-    :global(.visuals .card .description b) {
+    :global(.visuals .cards .card .card-name-title),
+    :global(.visuals .board .card .card-name-title) {
       font-size: 0.6rem !important;
+      margin-bottom: 0px !important;
     }
-    :global(.visuals .card .stat > h4) {
+    :global(.visuals .cards .card .skill-name-title),
+    :global(.visuals .board .card .skill-name-title) {
+      font-size: 0.5rem !important;
+      margin-bottom: 0px !important;
+    }
+    :global(.visuals .cards .card .skill-desc-text),
+    :global(.visuals .board .card .skill-desc-text) {
+      font-size: 0.45rem !important;
+    }
+    :global(.visuals .cards .card .stat > h4),
+    :global(.visuals .board .card .stat > h4) {
       font-size: 0.4rem !important;
     }
-    :global(.visuals .card .stat > p) {
+    :global(.visuals .cards .card .stat > p),
+    :global(.visuals .board .card .stat > p) {
       font-size: 0.75rem !important;
     }
-    :global(.visuals .card) {
+    :global(.visuals .cards .card),
+    :global(.visuals .board .card) {
       padding: 4px !important;
     }
-    :global(.visuals .card-image) {
+    :global(.visuals .cards .card-image),
+    :global(.visuals .board .card-image) {
       border-width: 2px !important;
       margin-bottom: 4px !important;
     }
@@ -839,5 +876,63 @@
       width: 8px;
       height: 8px;
     }
+  }
+
+  @media (max-height: 600px) {
+    .visuals {
+      --umnojitel: 1.2;
+      --card-height: 150px;
+    }
+    .showcase, .intro-cards {
+      --umnojitel: 1.2;
+      --card-height: 160px;
+    }
+    :global(.visuals .cards .card .description),
+    :global(.visuals .board .card .description) {
+      font-size: 0.4rem !important;
+      padding: 0 1px !important;
+      min-height: 0 !important;
+      margin-bottom: 2px !important;
+    }
+    :global(.visuals .cards .card .card-name-title),
+    :global(.visuals .board .card .card-name-title) {
+      font-size: 0.45rem !important;
+      margin-bottom: 0px !important;
+    }
+    :global(.visuals .cards .card .skill-name-title),
+    :global(.visuals .board .card .skill-name-title) {
+      font-size: 0.4rem !important;
+      margin-bottom: 0px !important;
+    }
+    :global(.visuals .cards .card .skill-desc-text),
+    :global(.visuals .board .card .skill-desc-text) {
+      font-size: 0.35rem !important;
+    }
+    :global(.visuals .cards .card .stat > h4),
+    :global(.visuals .board .card .stat > h4) {
+      font-size: 0.35rem !important;
+    }
+    :global(.visuals .cards .card .stat > p),
+    :global(.visuals .board .card .stat > p) {
+      font-size: 0.6rem !important;
+    }
+    .header { padding: 0.5rem 1rem; }
+    .content-area { padding: 0.5rem; gap: 0.5rem; }
+    .description { font-size: 0.85rem; line-height: 1.4; }
+  }
+
+  @media (max-height: 450px) {
+    .visuals {
+      --umnojitel: 0.9;
+      --card-height: 120px;
+    }
+    .showcase, .intro-cards {
+      --umnojitel: 0.9;
+      --card-height: 125px;
+    }
+    .header { padding: 0.3rem 1rem; }
+    .title { font-size: 1.2rem; }
+    .description { font-size: 0.75rem; }
+    .footer { padding: 0.5rem 1rem; }
   }
 </style>

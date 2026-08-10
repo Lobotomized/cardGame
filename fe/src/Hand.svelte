@@ -8,6 +8,7 @@
     export let mode: modeType;
     export let isAnimating: boolean = false;
     export let isMyTurn: boolean = false;
+    export let hidePlayButton: boolean = false;
 
     let selectedCardIndex: number | null = null;
     let isProcessing = false;
@@ -62,6 +63,7 @@
             <Card mode={mode} card={cards[selectedCardIndex]}></Card>
         </div>
         <div class="overlay-buttons">
+            {#if !hidePlayButton}
             <button 
                 class="btn-play" 
                 disabled={!isMyTurn || isAnimating || isProcessing}
@@ -69,6 +71,7 @@
             >
                 {isAnimating ? 'Battle in progress...' : (isMyTurn ? 'Play the Card' : 'Wait your turn to play')}
             </button>
+            {/if}
             <button class="btn-back" on:click={() => selectedCardIndex = null}>Back</button>
         </div>
     </div>
