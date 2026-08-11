@@ -44,6 +44,7 @@
 
   function handleTutorialOpen() {
     stopSearching();
+    fetch('/api/analytics/tutorial', { method: 'POST' }).catch(console.error);
     showTutorial = true;
   }
 
@@ -53,6 +54,7 @@
   }
 
   onMount(() => {
+    fetch('/api/analytics/visit', { method: 'POST' }).catch(console.error);
     findOpponent();
   });
 </script>

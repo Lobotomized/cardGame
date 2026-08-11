@@ -7,8 +7,29 @@ const delayStartBlocker = require('./blockers').delayStartBlocker
 const {battle,special, drawCard,playCard,bet, checkIfMyTurn, checkForBattle, cleanBoard, isRoundFinished, countRoundAndClean, giveStartingCards, oppositePlayer} = require('./helperMethods.js')
 const cardsObj = require('./cards.js')
 
+const analytics = require('./analytics.js');
+
 app.use('/static', express.static('public'))
 app.use('/assets', express.static('fe/dist/assets'))
+app.use('/raw-assets', express.static('fe/src/assets'))
+app.use(express.json());
+
+app.post('/api/analytics/tutorial', (req, res) => {
+    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+    analytics.trackTutorialOpened(ip);
+    res.sendStatus(200);
+});
+
+app.post('/api/analytics/visit', (req, res) => {
+    const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+    analytics.trackSiteVisit(ip);
+    res.sendStatus(200);
+});
+
+app.get('/api/analytics', async (req, res) => {
+    const data = await analytics.getAnalyticsData();
+    res.json(data);
+});
 
 
 /*
@@ -180,6 +201,13 @@ newG({
             state.mode = 'readyCheck';
             state.player1.ready = false;
             state.player2.ready = false;
+
+            if (state.playersConfigArray) {
+                const ips = state.playersConfigArray.map(p => p.ip).filter(ip => ip);
+                const isPvp = state.playersConfigArray.every(p => !p.socketId.startsWith('thisisabot'));
+                analytics.trackGamePlayed(ips, isPvp);
+            }
+
             return;
         }
 
@@ -203,6 +231,21 @@ newG({
             if (!state.roundEndTimer) {
                 state.roundEndTimer = Date.now() + 3000;
             } else if (Date.now() >= state.roundEndTimer) {
+                if (state.playersConfigArray) {
+                    const ips = state.playersConfigArray.map(p => p.ip).filter(ip => ip);
+                    const isPvp = state.playersConfigArray.every(p => !p.socketId.startsWith('thisisabot'));
+                    const roundData = {
+                        ips,
+                        isPvp,
+                        battleHistory: state.battleHistory,
+                        player1Score: state.player1.score,
+                        player2Score: state.player2.score,
+                        bettingWinner: state.koeficient ? state.koeficient.better : null,
+                        bettingMode: state.mode
+                    };
+                    analytics.trackRoundEnd(roundData);
+                }
+
                 countRoundAndClean(state)
                 giveStartingCards(state)
                 state.roundEndTimer = null;
@@ -472,6 +515,10 @@ false,
     }
 })
 
+
+app.get('/analytics', function (req, res) {
+    return res.status(200).sendFile(__dirname + '/analytics.html');
+});
 
 app.get('/', function (req, res) {
     return res.status(200).sendFile(__dirname + '/fe/dist/index.html');

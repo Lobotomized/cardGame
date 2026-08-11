@@ -101,13 +101,14 @@ const newGame = function (properties) {
             }
         }
 
-        this.joinGame = function (socketId, playerId) {
+        this.joinGame = function (socketId, playerId, ip) {
             let ga = this.games.find((g) => {
 
                 if (playerId) {
                     return g.players.find((player) => {
                         if (player.hello == playerId && player.socketId != socketId) {
                             player.socketId = socketId
+                            if (ip) player.ip = ip;
                         }
                         return player.hello == playerId
                     })
@@ -125,14 +126,14 @@ const newGame = function (properties) {
                 })
 
                 if (ga) {
-                    ga.join(socketId, playerId);
+                    ga.join(socketId, playerId, ip);
                 }
             }
 
             if (!ga) {
                 ga = new g();
                 this.games.push(ga)
-                ga.join(socketId, playerId)
+                ga.join(socketId, playerId, ip)
             }
 
             if (playerId) {
@@ -214,8 +215,8 @@ const newGame = function (properties) {
             this.join('thisisabot' + id)
         }
 
-        this.join = (socketId, playerId) => {
-            const player = { socketId: socketId, ref: 'player' + (this.players.length + 1 + this.disconnected.length) }
+        this.join = (socketId, playerId, ip) => {
+            const player = { socketId: socketId, ref: 'player' + (this.players.length + 1 + this.disconnected.length), ip: ip }
             if (playerId) {
                 player.hello = playerId;
                 const existing = this.disconnected.find((pl) => {
@@ -223,6 +224,7 @@ const newGame = function (properties) {
                 })
                 if (existing) {
                     existing.socketId = socketId
+                    if (ip) existing.ip = ip;
                     this.players.push(existing);
                     this.disconnected.splice(this.disconnected.indexOf(existing), 1);
                 }
@@ -313,9 +315,10 @@ module.exports.newIOServer = function newServer(properties, io, hello, botConfig
     helperFunctionDelay();
 
     io.on('connection', function (socket) {
+        const ip = socket.handshake.headers['x-forwarded-for'] || socket.handshake.address;
 
         if (!hello) {
-            lobby.joinGame(socket.id)
+            lobby.joinGame(socket.id, undefined, ip)
 
             socket.on('disconnect', () => {
                 lobby.disconnectGame(socket.id)
@@ -329,7 +332,7 @@ module.exports.newIOServer = function newServer(properties, io, hello, botConfig
 
             socket.on('hello', (data) => {
                 socket.hello = data;
-                lobby.joinGame(socket.id, data);
+                lobby.joinGame(socket.id, data, ip);
             })
 
 

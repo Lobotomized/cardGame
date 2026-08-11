@@ -252,7 +252,7 @@ module.exports = {
         cardTitle:"Cerberus",
         special:"loseAPoint",
         animation:"cerberus",
-        description:"Eat the last card you have in your winning cards",
+        description:"Remove the last card you have in your winning cards",
         descriptionTitle:"Feed the Dog",
         intelligence:7,
         strength:11,
