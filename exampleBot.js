@@ -146,10 +146,8 @@ const handlePlayingPhase = function (player, move, state) {
     state.lastBattleWinner = winner;
 
     // Set turn after battle
-    if (winner === "tie" && prevBattleWinner && prevBattleWinner !== "tie") {
-        state.turn = prevBattleWinner;
-    } else if (winner === "tie") {
-        state.turn = "player1";
+    if (winner === "tie") {
+        state.turn = oppositePlayer(player.ref);
     } else {
         state.turn = winner;
     }
