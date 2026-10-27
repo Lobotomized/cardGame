@@ -376,6 +376,10 @@ false,
             return;
         }
 
+        if (!bot.botType) {
+            bot.botType = Math.random() > 0.5 ? 'smart' : 'stupid';
+        }
+
         const state = game.returnState(bot.socketId);
         if (!state || state.message) return; // Blocker message
 
@@ -397,11 +401,18 @@ false,
             let strScore = 0, agiScore = 0, intScore = 0;
             if (state.me && state.me.hand && state.me.hand.length > 0) {
                 state.me.hand.forEach(c => {
-                    // Evaluate peak values by squaring the stats. 
-                    // A single 9 (81) will outweigh three 5s (75).
-                    strScore += Math.pow(c.strength, 2);
-                    agiScore += Math.pow(c.agility, 2);
-                    intScore += Math.pow(c.intelligence, 2);
+                    if (bot.botType === 'smart') {
+                        // Evaluate peak values by squaring the stats. 
+                        // A single 9 (81) will outweigh three 5s (75).
+                        strScore += Math.pow(c.strength, 2);
+                        agiScore += Math.pow(c.agility, 2);
+                        intScore += Math.pow(c.intelligence, 2);
+                    } else {
+                        // Old stupid bot logic: linear sum
+                        strScore += c.strength;
+                        agiScore += c.agility;
+                        intScore += c.intelligence;
+                    }
                 });
                 const best = Math.max(strScore, agiScore, intScore);
                 let selectedMode = 'strength';
@@ -429,7 +440,7 @@ false,
             const enemyRef = state.meRef === 'player1' ? 'player2' : 'player1';
             const enemyCard = state.board && state.board[enemyRef];
 
-            if (state.board && state.board.publicDeck && state.board.publicDeck.length === 0) {
+            if (bot.botType === 'smart' && state.board && state.board.publicDeck && state.board.publicDeck.length === 0) {
                 const knownCardTitles = new Set();
                 state.me.hand.forEach(c => knownCardTitles.add(c.cardTitle));
                 if (state.battleHistory) {
