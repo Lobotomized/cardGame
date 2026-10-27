@@ -394,17 +394,19 @@ false,
         bot.lastMoveTime = Date.now();
 
         if (state.mode === 'betting') {
-            let str = 0, agi = 0, int = 0;
+            let strScore = 0, agiScore = 0, intScore = 0;
             if (state.me && state.me.hand && state.me.hand.length > 0) {
                 state.me.hand.forEach(c => {
-                    str += c.strength;
-                    agi += c.agility;
-                    int += c.intelligence;
+                    // Evaluate peak values by squaring the stats. 
+                    // A single 9 (81) will outweigh three 5s (75).
+                    strScore += Math.pow(c.strength, 2);
+                    agiScore += Math.pow(c.agility, 2);
+                    intScore += Math.pow(c.intelligence, 2);
                 });
-                const best = Math.max(str, agi, int);
+                const best = Math.max(strScore, agiScore, intScore);
                 let selectedMode = 'strength';
-                if (best === agi) selectedMode = 'agility';
-                if (best === int) selectedMode = 'intelligence';
+                if (best === agiScore) selectedMode = 'agility';
+                if (best === intScore) selectedMode = 'intelligence';
 
                 // If the player just bet on the same mode we want, we MUST give up instead of betting the exact same thing
                 if (state.tempMode === selectedMode) {
