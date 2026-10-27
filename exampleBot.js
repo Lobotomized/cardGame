@@ -153,6 +153,81 @@ const handlePlayingPhase = function (player, move, state) {
     }
 };
 
+function getMinimaxScore(state, meRef) {
+    const enemyRef = oppositePlayer(meRef);
+    let score = (state[meRef].taken.length - state[enemyRef].taken.length) * 1000;
+    
+    let myStats = 0;
+    state[meRef].hand.forEach(c => { myStats += c.strength + c.agility + c.intelligence; });
+    let enemyStats = 0;
+    state[enemyRef].hand.forEach(c => { enemyStats += c.strength + c.agility + c.intelligence; });
+    
+    score += (myStats - enemyStats);
+    return score;
+}
+
+function simulatePlay(testState, movePlayerRef, cardIndex) {
+    testState.board[movePlayerRef] = testState[movePlayerRef].hand[cardIndex];
+    testState[movePlayerRef].hand.splice(cardIndex, 1);
+    
+    testState.turn = oppositePlayer(movePlayerRef);
+
+    if (testState.board.player1 && testState.board.player2) {
+        try { special(oppositePlayer(movePlayerRef), movePlayerRef, testState); } catch(e) {}
+        try { special(movePlayerRef, oppositePlayer(movePlayerRef), testState); } catch(e) {}
+
+        let winner = 'tie';
+        try { winner = battle(testState); } catch(e) {}
+        
+        testState.lastBattleWinner = winner;
+
+        if (winner === "tie") {
+            testState.turn = oppositePlayer(movePlayerRef);
+        } else {
+            testState.turn = winner;
+        }
+        
+        if (!testState.tie) testState.tie = { taken: [] };
+        
+        cleanBoard(testState.board, winner === 'tie' ? testState.tie : testState[winner], testState);
+    }
+}
+
+function minimax(state, meRef, alpha, beta) {
+    const enemyRef = oppositePlayer(meRef);
+    
+    if (state.player1.hand.length === 0 && state.player2.hand.length === 0) {
+        return getMinimaxScore(state, meRef);
+    }
+
+    const currentTurnRef = state.turn;
+    const isMaximizing = (currentTurnRef === meRef);
+
+    if (isMaximizing) {
+        let maxEval = -Infinity;
+        for (let i = 0; i < state[meRef].hand.length; i++) {
+            const testState = JSON.parse(JSON.stringify(state));
+            simulatePlay(testState, meRef, i);
+            const ev = minimax(testState, meRef, alpha, beta);
+            maxEval = Math.max(maxEval, ev);
+            alpha = Math.max(alpha, ev);
+            if (beta <= alpha) break;
+        }
+        return maxEval;
+    } else {
+        let minEval = Infinity;
+        for (let i = 0; i < state[enemyRef].hand.length; i++) {
+            const testState = JSON.parse(JSON.stringify(state));
+            simulatePlay(testState, enemyRef, i);
+            const ev = minimax(testState, meRef, alpha, beta);
+            minEval = Math.min(minEval, ev);
+            beta = Math.min(beta, ev);
+            if (beta <= alpha) break;
+        }
+        return minEval;
+    }
+}
+
 newG({
     baseState: {
         player1: {
@@ -351,6 +426,55 @@ false,
             
             const enemyRef = state.meRef === 'player1' ? 'player2' : 'player1';
             const enemyCard = state.board && state.board[enemyRef];
+
+            if (state.board && state.board.publicDeck && state.board.publicDeck.length === 0) {
+                const knownCardTitles = new Set();
+                state.me.hand.forEach(c => knownCardTitles.add(c.cardTitle));
+                if (state.battleHistory) {
+                    state.battleHistory.forEach(trick => {
+                        if (trick.player1) knownCardTitles.add(trick.player1.cardTitle);
+                        if (trick.player2) knownCardTitles.add(trick.player2.cardTitle);
+                    });
+                }
+                if (enemyCard) {
+                    knownCardTitles.add(enemyCard.cardTitle);
+                }
+
+                let unseenCards = [];
+                if (state.bigGameCards) {
+                    state.bigGameCards.forEach(c => {
+                        if (!knownCardTitles.has(c.cardTitle)) {
+                            unseenCards.push(JSON.parse(JSON.stringify(c)));
+                        }
+                    });
+                }
+
+                let maxEval = -Infinity;
+                let alpha = -Infinity;
+                let beta = Infinity;
+
+                for (let i = 0; i < state.me.hand.length; i++) {
+                    const testState = JSON.parse(JSON.stringify(state));
+                    testState[testState.meRef] = testState.me;
+                    testState[enemyRef] = {
+                        hand: JSON.parse(JSON.stringify(unseenCards)),
+                        taken: new Array(testState.enemyTaken || 0).fill(null)
+                    };
+                    if (!testState.tie) testState.tie = { taken: [] };
+                    if (!testState.battleHistory) testState.battleHistory = [];
+
+                    simulatePlay(testState, testState.meRef, i);
+                    
+                    const ev = minimax(testState, state.meRef, alpha, beta);
+                    if (ev > maxEval) {
+                        maxEval = ev;
+                        bestIndex = i;
+                    }
+                    alpha = Math.max(alpha, ev);
+                }
+                game.move(bot.socketId, { cardIndex: bestIndex });
+                return;
+            }
             
             if (enemyCard) {
                 // GOING SECOND
